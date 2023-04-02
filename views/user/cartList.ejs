@@ -1,0 +1,238 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/shop">Shop</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">Cart</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">Your Cart</h1>
+      </div>
+    </div>
+  </div>
+
+  <% if(cart.cart.length==0){%>
+
+    <!-- Alert with bakground image -->
+    <div class="container pb-5 mb-2 mb-md-4">
+      <div class="row">
+        <section class="col-lg-8 col-sm-6">
+        <div class="alert alert-dismissible bg-size-cover fade show text-center py-5" style="background-image: url(https://arteno.serveradda.in/assets/images/deafult/emptycart.gif)" role="alert">
+          <i class="ci-loading d-block text-muted my-4" style="font-size: 3rem;"></i>
+          <h2 class="text-muted text-shadow">Your Cart is Empty !</h2>
+          <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Offers</h4>
+          <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>View Offers</a>
+        </div>
+        </section>
+        </div>
+        </div>
+  <% }else{  %>
+
+    
+  <div class="container pb-5 mb-2 mb-md-4" <% cart.cart.forEach((cart)=>{ %> id="<%= cart.id %>items"  <% })%>  >
+    <div class="row">
+      <!-- List of items-->
+      <section class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center pt-3 pb-4 pb-sm-5 mt-1">
+          <h2 class="h6 text-light mb-0">Products<span class="badge rounded-pill bg-accent ms-2"><%= cart.cart.length %></span></h2><a class="btn btn-outline-primary btn-sm ps-2" href="/shop"><i class="ci-arrow-left me-2"></i>Continue Shopping</a>
+        </div>
+        <!-- Item-->
+        <div style="overflow-x: auto; max-height: 580px;" data-simplebar data-simplebar-auto-hide="false">
+          <% let subtotal = 0 %>
+        <% cart.cart.forEach((cart)=>{ %>
+        <div class="d-sm-flex justify-content-between align-items-center my-2 pb-3 border-bottom" id="<%= cart.id %>item">
+          <div class="d-block d-sm-flex align-items-center text-center text-sm-start"><a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><img src="/productimages/<%= cart.product_id.image[0] %>" class="rounded-3" width="160" alt="Product"></a>
+            <div class="pt-2">
+              <h3 class="product-title fs-base mb-1"><a href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><%= cart.product_id.name %></a></h3>
+              <!-- <div class="fs-sm"><span class="text-muted me-2">Category:</span></div> -->
+              <!-- <div class="fs-sm"><span class="text-muted me-2">Color:</span>White &amp; Blue</div> -->
+              <div class="fs-lg text-accent pt-2 mb-1"><span>₹</span><span id="<%= cart.id %>Price"><%= cart.product_id.price %></span></div>
+              <div class="fs-sm text-success"><span class="text-muted me-2">Total :</span><span>₹</span><span id="<%= cart.id %>TotalPrice"><%= cart.product_id.price*cart.quantity %></span></div>
+            </div>
+          </div>
+          <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-start" style="max-width: 7rem;">
+            <label class="form-label">Quantity</label>
+            <input class="form-control" type="number" min="1" max="<%= cart.product_id.stock %>" value="<%= cart.quantity %>" id="<%= cart.id %>Qnty" disabled>
+              <button class="btn bg-faded-accent btn-icon mt-1" onclick="quantityDec('<%= cart.id %>')" data-bs-toggle="tooltip"><i class="ci-arrow-down-circle text-accent"></i></button>
+              <button class="btn bg-faded-success btn-icon mt-1" onclick="quantityInc('<%= cart.id %>')" data-bs-toggle="tooltip"><i class="ci-arrow-up-circle text-success"></i></button>
+            <button class="btn btn-link px-0 text-danger ms-1" onclick="deleteCart('<%= cart.id %>')"><i class="ci-close-circle me-2"></i><span class="fs-sm">Remove</span></button>
+          </div>
+        </div>
+        <% subtotal += cart.product_id.price * cart.quantity %>
+        <% })%>
+      </div>
+        <a href="/cart"><button class="btn btn-outline-accent d-block w-100 mt-4" type="button"><i class="ci-loading fs-base me-2"></i>Refresh Cart</button></a>
+      </section>
+
+
+      <!-- Sidebar-->
+      
+      <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
+        <div class="bg-white rounded-3 shadow-lg p-4">
+          <div class="py-2 px-xl-2">
+            <div class="text-center mb-4 pb-3 border-bottom">
+              <h2 class="h6 mb-3 pb-1">Subtotal</h2>
+              <h3 class="fw-normal"><span>₹</span><span id="cartSubTotal"><%= subtotal%></span></h3>
+            </div>
+            <a class="btn btn-primary btn-shadow d-block w-100 mt-4" href="/checkout-detail"><i class="ci-card fs-lg me-2"></i>Proceed to Checkout</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <% } %>
+
+
+
+  <div class="modal fade" id="emptyCart" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-0">
+              <div class="alert alert-dismissible bg-size-cover fade show text-center mb-0 py-5" style="background-image: url(https://arteno.serveradda.in/assets/images/deafult/emptycart.gif)" role="alert">
+                <i class="ci-loading d-block text-muted my-4" style="font-size: 3rem;"></i>
+                <h2 class="text-muted text-shadow">Your Cart is Empty !</h2>
+                <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Offers</h4>
+                <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>View Offers</a>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+
+
+
+<script>
+
+function quantityInc(id) {
+
+  let Qnty = Number($("#" + id + "Qnty").val());
+
+  if (Number($("#" + id + "Qnty").attr("max")) > Qnty) {
+      $.ajax({
+        type: "POST",
+        url: "/quantity-inc",
+        data: {
+          id,
+        },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+        let price = Number($("#" + id + "Price").html());
+        let Qnty = Number($("#" + id + "Qnty").val());
+        let currentTotal = Number($("#cartSubTotal").html());
+        $("#" + id + "Qnty").val(Qnty + 1);
+        $("#" + id + "TotalPrice").html(price * (Qnty + 1));
+        $("#cartSubTotal").html(currentTotal + price);
+        $("#Total").html(currentTotal + price);
+        cartCout();
+      });
+  } else {
+    Swal.fire({
+      icon: "warning",
+      title: "Stock Limit Exceeded",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "&nbsp&nbsp&nbsp OKAY &nbsp&nbsp&nbsp ",
+    });
+  }
+}
+
+function quantityDec(id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/quantity-dec",
+        data: {
+          id,
+        },
+        dataType: "json",
+        encode: true,
+    }).done(function (data) {
+
+        if (data == "minimum") {
+          Swal.fire({
+            icon: "warning",
+            title: "Minimum Quantity Required",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "&nbsp&nbsp&nbsp OKAY &nbsp&nbsp&nbsp ",
+          });
+        } else {
+          let price = Number($("#" + id + "Price").html());
+          let Qnty = Number($("#" + id + "Qnty").val());
+          $("#" + id + "Qnty").val(Qnty - 1);
+          $("#" + id + "TotalPrice").html(price * (Qnty - 1));
+          let currentTotal = Number($("#cartSubTotal").html());
+          $("#cartSubTotal").html(currentTotal - price);
+          $("#Total").html(currentTotal - price);
+          cartCout();
+        }
+      
+    });
+
+}
+
+function deleteCart(id) {
+  Swal.fire({
+    title: "Want to Delete?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "&nbsp&nbsp&nbsp YES &nbsp&nbsp&nbsp",
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      let price = Number($("#" + id + "Price").html());
+      let Qnty = Number($("#" + id + "Qnty").val());
+      let currentTotal = Number($("#cartSubTotal").html());
+      $("#cartSubTotal").html(currentTotal - price * Qnty);
+      $.ajax({
+        type: "POST",
+        url: "/delete-cart",
+        data: {
+          id,
+        },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+
+
+        if(data == 'remove'){
+
+          $("#" + id + "items").remove();
+          $('#emptyCart').modal('show');
+
+        } if ( data == 'added'){
+
+          Swal.fire({
+            icon: "success",
+            title: "Product Removed!",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "&nbsp&nbsp&nbsp OKAY &nbsp&nbsp&nbsp ",
+          });
+        $("#" + id + "item").remove();
+
+        }
+        cartCout();
+
+      });
+    }
+  });
+}
+
+</script>
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

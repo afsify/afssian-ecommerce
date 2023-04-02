@@ -1,0 +1,177 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+<!-- Add New Address-->
+<form class="needs-validation modal fade" action="/addaddress" method="post" id="add-address" tabindex="-1" novalidate>
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Address</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row gx-4 gy-3">
+            <div class="col-sm-12">
+              <label class="form-label" for="name">Name</label>
+              <input class="form-control" type="text" name="Name" id="name" required>
+              <div class="invalid-feedback">Please fill your name!</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="house">House</label>
+              <input class="form-control" type="text" name="House" id="house" required>
+              <div class="invalid-feedback">Please fill your house!</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="post">Post</label>
+              <input class="form-control" type="text"id="post" name="post" required>
+              <div class="invalid-feedback">Please add your post!</div>
+            </div>
+            <div class="col-sm-6">
+                <label class="form-label" for="pin">Pin</label>
+                <input class="form-control" type="number" name="pin" id="pin" required>
+                <div class="invalid-feedback">Please add your pin!</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="city">City</label>
+              <input class="form-control" type="text" name="city" id="city" required>
+              <div class="invalid-feedback">Please fill your city!</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="district">District</label>
+              <select class="form-select me-2" type="text" name="district" id="district" required>
+                <option value="">Select District</option>
+                <option value="Alappuzha">Alappuzha</option>
+                <option value="Ernakulam">Ernakulam</option>
+                <option value="Idukki">Idukki</option>
+                <option value="Kannur">Kannur</option>
+                <option value="Kasaragod">Kasaragod</option>
+                <option value="Kollam">Kollam</option>
+                <option value="Kottayam">Kottayam</option>
+                <option value="Kozhikode">Kozhikode</option>
+                <option value="Malappuram">Malappuram</option>
+                <option value="Palakkad">Palakkad</option>
+                <option value="Pathanamthitta">Pathanamthitta</option>
+                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                <option value="Thrissur">Thrissur</option>
+                <option value="Wayanad">Wayanad</option>
+              </select>
+              
+              <div class="invalid-feedback">Please select your district!</div>
+            </div>
+            <div class="col-sm-6">
+              <label class="form-label" for="state">State</label>
+              <select class="form-select me-2" type="text" name="state" id="state" required>
+                <option value="">Select State</option>
+                  <option value="Kerala">Kerala</option>
+              </select>
+              <div class="invalid-feedback">Please select your state!</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary btn-shadow" type="submit"><i class="ci-check-circle fs-lg me-2"></i>SUBMIT</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/account">Account</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">My Addresses</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">My Addresses</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+      <!-- Sidebar-->
+      <aside class="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
+        <div class="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
+          <div class="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
+            <div class="d-md-flex align-items-center">
+              <!-- <div class="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0" style="width: 6.375rem;"><img class="rounded-circle" src="img/shop/account/avatar.jpg" alt="Susan Gardner"></div> -->
+              <div class="ps-md-3">
+                <h3 class="fs-base mb-0"><%= userdetials.name %></h3><span class="text-accent fs-sm"><%= userdetials.email %></span>
+              </div>
+            </div><a class="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0" href="#account-menu" data-bs-toggle="collapse" aria-expanded="false"><i class="ci-menu me-2"></i>Account Menu</a>
+          </div>
+          <div class="d-lg-block collapse" id="account-menu">
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">DASHBOARD</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/order"><i class="ci-bag opacity-60 me-2"></i>Orders<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/wishlist"><i class="ci-heart opacity-60 me-2"></i>Wishlist<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/discount"><i class="ci-discount opacity-60 me-2"></i>Coupons<span class="fs-sm text-muted ms-auto"></span></a></li>
+            </ul>
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">ACCOUNT</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/account"><i class="ci-user opacity-60 me-2"></i>Profile Info</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/change-password"><i class="ci-loading opacity-60 me-2"></i>Change Password</a></li>
+              <li class="mb-0 bg-faded-accent"><a class="nav-link-style d-flex align-items-center px-4 py-3 active" href="/address"><i class="ci-location opacity-60 me-2"></i>Addresses</a></li>
+              <li class="d-lg-none border-top mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/userlogout"><i class="ci-sign-out opacity-60 me-2"></i>SIGN OUT</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+
+<!-- Content  -->
+<section class="col-lg-8">
+    <!-- Toolbar-->
+    <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+      <h6 class="fs-base text-light mb-0">List of Your Registered Addresses : </h6><a class="btn btn-danger btn-sm" href="/userlogout"><i class="ci-sign-out me-2"></i>SIGN OUT</a>
+    </div>
+    <!-- Addresses list-->
+    <div class="table-responsive fs-md" style="overflow-x: auto; max-height: 380px;" data-simplebar>
+      <table class="table table-hover mb-0" id="myTable">
+        <thead>
+          <tr>
+            <th>Address</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% userdetials.address.forEach((val)=>{ %>
+          <tr>
+            <td class="align-middle"><p class="m-0"><b><%= val.name%></b>,
+              <%= val.house +', '+ val.post +', ' +val.pin+', '+ val.city +', '+ val.district +', '+val.state %></p>
+            </td>
+            <td  class="align-middle">
+              <!-- <a class="nav-link-style me-2" href="#" data-bs-toggle="tooltip" title="Edit"><i class="ci-edit"></i></a> -->
+              <form action="/deleteaddress/<%= val._id %>" method="post">
+                <button class="btn bg-faded-danger btn-icon" type="submit" data-bs-toggle="tooltip" title="Delete"><i class="ci-trash text-danger"></i></button>
+            </form>
+          </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-sm-end pt-4 me-4"><a class="btn btn-primary" href="#add-address" data-bs-toggle="modal"><i class="ci-add-document fs-lg me-2"></i>Add Address</a></div>
+  </section>
+</div>
+</div>
+</main>
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

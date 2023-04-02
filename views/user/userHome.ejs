@@ -1,0 +1,219 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+      <!-- Hero (Banners + Slider)-->
+      <section class="bg-secondary py-4 pt-md-5">
+        <div class="container py-xl-2">
+          <div class="row">
+            <!-- Slider     -->
+            <div class="col-xl-9 pt-xl-4 order-xl-2">
+              <div class="tns-carousel tns-nav-enabled">
+                <div class="tns-carousel-inner" >
+                  <% bannerSlider.forEach((s)=> { %>
+                  <div>
+                    <div class="row align-items-center">
+                      <div class="col-md-6 order-md-2"><img class="d-block mx-auto" src="/productImages/<%= s.image %>" alt="Banner"></div>
+                      <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-start">
+                        <h1 class="display-4 from-bottom delay-1"><%= s.bannerName %></h1>
+                        <h5 class="fw-light pb-3 from-bottom delay-2"><%= s.description %></h5>
+                        <div class="d-table scale-up delay-4 mx-auto mx-md-0"><a class="btn btn-primary btn-shadow" target="_blank" href="https://www.google.com/">Shop Now<i class="ci-arrow-right ms-2 me-n1"></i></a></div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+            <!-- Banner group-->
+            <div class="col-xl-3 order-xl-1 pt-4 mt-3 mt-xl-0 pt-xl-0">
+              <div class="table-responsive" data-simplebar>
+                <div class="d-flex d-xl-block">
+                  <% bannerGroup.forEach((g)=> { %>
+                  <a class="d-flex align-items-center bg-faded-success rounded-3 pt-0 ps-2 mb-3 me-4 me-xl-0" target="_blank" href="https://www.google.com/" style="min-width: 16rem;"><img src="/productImages/<%= g.image %>" width="125" alt="Banner">
+                    <div class="py-4 px-2">
+                      <h5 class="mb-1"><%= g.bannerName %></h5>
+                      <h5 class="fw-lighter fs-md mb-1"><%= g.description %></h5>
+                      <div class="text-success fs-sm">Shop now<i class="ci-arrow-right fs-xs ms-1"></i></div>
+                    </div>
+                  </a>
+                  <% }) %>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Products grid (Trending products)-->
+      <section class="container pt-5">
+        
+        <div class="d-flex flex-wrap justify-content-between align-items-center pt-1 border-bottom pb-4 mb-4">
+          <h2 class="h3 mb-0 pt-3 me-2">Trending Products</h2>
+          <div class="pt-3"><a class="btn btn-outline-accent btn-sm" href="/shop">More Products<i class="ci-arrow-right ms-1 me-n1"></i></a></div>
+        </div>
+        
+        <div class="row pt-2 mx-n2">
+
+<% if(user){ %>
+
+<% products.forEach((product) => { %>
+  <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-5">
+    <div class="card product-card">
+            <% if (JSON.stringify(wishId).includes(product._id)){ %>
+              <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                <i class="ci-heart-filled text-danger"></i>
+              </button>
+            <% } else { %>
+              <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                <i class="ci-heart"></i>
+              </button>
+            <% } %>
+                  <a class="card-img-top d-block overflow-hidden" href="/productdetials/<%= product._id %>/<%= product.category._id %>"><img src="productImages/<%= product.image[0] %>" alt="Product"></a>
+                  <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"></a>
+                    <h3 class="product-title fs-sm"><a href="/productdetials/<%= product._id %>/<%= product.category._id %>"><%= product.name %></a></h3>
+                    <div class="d-flex justify-content-between">
+                      <div class="product-price"><span class="text-accent">₹<%= product.price %></span></div>
+                    </div>
+                  </div>
+                  <div class="card-body card-body-hidden">
+                    <% if(product.status == "In Stock"){ %>
+                      <button class="btn btn-primary btn-sm d-block w-100 mb-2" onclick="addToCart('<%= product._id%>',this)"><i class="ci-cart fs-sm me-1"></i>Add to Cart</button>
+                    <% }else{ %>
+                      <button class="btn btn-danger btn-sm d-block w-100 mb-2" disabled><i class="ci-locked fs-sm me-1"></i>Out of Stock</button>
+                    <% } %>
+                  </div>
+                </div>
+                <hr class="d-sm-none">
+              </div>
+            <% }) %>
+
+            <% }else{ %>
+
+              <% products.forEach((product)=>{ %>
+                <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-5">
+                  <div class="card product-card">
+                    <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                      <i class="ci-heart"></i>
+                    </button>
+                    <a class="card-img-top d-block overflow-hidden" href="/productdetials/<%= product._id %>/<%= product.category._id %>"><img src="productImages/<%= product.image[0] %>" alt="Product"></a>
+                    <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"></a>
+                      <h3 class="product-title fs-sm"><a href="/productdetials/<%= product._id %>/<%= product.category._id %>"><%= product.name %></a></h3>
+                      <div class="d-flex justify-content-between">
+                        <div class="product-price"><span class="text-accent">₹<%= product.price %></span></div>
+                      </div>
+                    </div>
+                    <div class="card-body card-body-hidden">
+                      <% if(product.status == "In Stock"){ %>
+                      <button class="btn btn-primary btn-sm d-block w-100 mb-2" onclick="addToCart('<%= product._id%>',this)"><i class="ci-cart fs-sm me-1"></i>Add to Cart</button>
+                      <% }else{ %>
+                      <button class="btn btn-danger btn-sm d-block w-100 mb-2" disabled><i class="ci-locked fs-sm me-1"></i>Out of Stock</button>
+                      <% } %>
+                    </div>
+                  </div>
+                  <hr class="d-sm-none">
+                </div>
+                <% }) %>
+
+<% } %>
+
+        </div>
+      </section>
+    </main>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-success border-success">
+          <div class="modal-header bg-faded-success border-success">
+            <h5 class="modal-title text-white" id="cartModalLabel">Success !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-success">
+            <i class="ci-check-circle d-block text-success text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-success text-shadow">Added to Cart</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="existModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-warning border-warning">
+          <div class="modal-header bg-faded-warning border-warning">
+            <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-warning">
+            <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-warning text-shadow">Already in Cart</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="modal fade" id="wishModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-warning border-warning">
+          <div class="modal-header bg-faded-warning border-warning">
+            <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-warning">
+            <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-warning text-shadow">Already in Wishlist</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <script>
+    
+      function addToCart(proId, button){
+    
+          $.ajax({
+    
+              url : '/add-to-cart/'+proId,
+              method : 'post',
+              success : (response) => {
+    
+                  if(response.added){
+                    $('#cartModal').modal('show');
+                  }
+                  if(response.exists){
+                    $('#existModal').modal('show');
+                  }
+    
+              }
+    
+          })
+    
+      }
+    
+    
+      function addToWishlist(proId, button){
+    
+          $.ajax({
+    
+              url : '/add-to-wishlist/'+proId,
+              method : 'post',
+              success : (response) => {
+    
+                  if(response.added){
+                    $(button).find('.ci-heart').removeClass('ci-heart').addClass('ci-heart-filled text-danger');
+                  }
+                  if(response.exists){
+                    $(button).find('.ci-heart-filled').removeClass('ci-heart-filled text-danger').addClass('ci-heart');
+                  }
+    
+              }
+    
+          })
+    
+      }
+    
+    </script>
+
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

@@ -1,0 +1,204 @@
+<%- include('../admin/layouts/adminHeader.ejs')%>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+            <!-- Content-->
+<section class="col-lg-9 pt-lg-4 pb-4 mb-3">
+  <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+    <!-- Title-->
+    <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom">
+      <h2 class="h3 py-2 me-2 text-center text-sm-start">Customers<span class="badge bg-faded-accent fs-sm text-body align-middle ms-2"><%= userCount%></span></h2>
+      <div>
+        <div class="input-group mb-3">
+          <input class="widget-filter-search form-control rounded-end pe-5" id="myInput" onkeyup="searchTable()" type="text" placeholder="Search"><i class="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+        </div>
+      </div>
+    </div>
+<!-- Dark table with hover rows -->
+<div class="table-responsive mt-3" style="overflow-x: auto; max-height: 370px;" data-simplebar>
+  <table class="table table-hover" id="myTable">
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">NAME</th>
+        <th class="text-center">EMAIL</th>
+        <th class="text-center">PHONE</th>
+        <th class="text-center">STATUS</th>
+        <th class="text-center">ACTION</th>
+      </tr>
+    </thead>
+    <% users.forEach(function(user,i){ %>
+    <tbody>
+      <tr>
+        <th class="py-3 text-center align-middle" scope="row"><%= i+1 %></th>
+        <td class="py-3 text-center align-middle"><span class="fw-medium"><%= user.name %></span></td>
+        <td class="py-3 text-center align-middle"><span class="text-accent"><%= user.email %></span></td>
+        <td class="py-3 text-center align-middle"><%= user.phone %></td>
+        <% if (user.status=="unbanned" ) { %>
+        <td class="py-3 text-center align-middle"><span class="text-success">Active</span></td>
+        <% } else { %>
+        <td class="py-3 text-center align-middle text-danger"><span class="text-danger">Blocked</span></td>
+        <% } %>
+        <td class="py-3 text-center align-middle">
+          <% if (user.status=="unbanned" ) { %>
+          <form action="/blockUser/<%= user._id %>" onsubmit="block(event)" id="form" method="post">
+            <button class="btn bg-faded-danger btn-icon" type="submit" data-bs-toggle="tooltip" title="Block"><i class="ci-security-close text-danger"></i></button>
+          </form>
+          <% } else { %>
+            <form action="/unblockUser/<%= user._id %> " method="post">
+              <button class="btn bg-faded-success btn-icon" type="submit" data-bs-toggle="tooltip" title="Unblock"><i class="ci-security-check text-success"></i></button>
+            </form>
+            <% } %>
+        </td>
+      </tr>
+    </tbody>
+    <% }) %>
+  </table>
+
+</div>
+
+<!-- Pagination-->
+<nav id="pagination" class="d-flex justify-content-between pt-4" aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item"><a id="prev" class="page-link"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+  </ul>
+
+
+  <div class="bg-light shadow-lg rounded-3 w-20">
+    <div class="d-flex justify-content-between align-items-center">
+  
+      <div><a class="btn btn-outline-accent" href="#select-pagination" data-bs-toggle="collapse" id="page-number"></a></div>
+  
+    </div>
+    <!-- Toolbar with expandable filters-->
+    <div class="collapse" id="select-pagination">
+
+            <select class="form-select" id="rows-per-page">
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+  
+    </div>
+  </div>
+  <ul class="pagination">
+    <li class="page-item"><a id="next" class="page-link" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+  </ul>
+</nav>
+  </div>
+</section>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    
+    <script>
+
+      function block(e) {
+        e.preventDefault()
+        swal({
+          title: "Want to Block this User?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+          .then((willDelete) => {
+            if (willDelete) {
+
+              swal("User has been blocked!", {
+                icon: "success",
+              });
+              document.getElementById('form').submit()
+              return true
+            } else {
+              swal("Your imaginary file is safe!");
+              return false
+            }
+          });
+      }
+
+    </script>
+
+
+<script>
+
+  $(document).ready(function() {
+    var table = $('#myTable');
+    var rowsPerPage = $('#rows-per-page').val();
+    var currentPage = 0;
+    
+    function showRows() {
+      var rows = table.find('tbody tr');
+      var numRows = rows.length;
+      var numPages = Math.ceil(numRows / rowsPerPage);
+      
+      if (numPages == 0) {
+        currentPage = 0;
+      } else if (currentPage >= numPages) {
+        currentPage = numPages - 1;
+      }
+      
+      var startIndex = currentPage * rowsPerPage;
+      var endIndex = Math.min(startIndex + rowsPerPage, numRows);
+      
+      rows.hide();
+      rows.slice(startIndex, endIndex).show();
+      
+      $('#page-number').text('Page ' + (currentPage + 1) + ' of ' + numPages);
+    }
+    
+    $('#next').click(function() {
+      currentPage++;
+      showRows();
+    });
+    
+    $('#prev').click(function() {
+      if(currentPage>=1){
+      currentPage--;
+      }
+      showRows();
+    });
+    
+    $('#rows-per-page').change(function() {
+      rowsPerPage = $(this).val();
+      currentPage = 0;
+      showRows();
+    });
+    
+    showRows();
+  });
+  
+  
+  </script>
+
+<script>
+  function searchTable() {
+    var input, filter, table, tbody, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tbody = table.getElementsByTagName("tbody");
+    for (i = 0; i < tbody.length; i++) {
+      tr = tbody[i].getElementsByTagName("tr");
+      for (j = 0; j < tr.length; j++) {
+        td = tr[j].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[j].style.display = "";
+          } else {
+            tr[j].style.display = "none";
+          }
+        }
+      }
+    }
+  }
+</script>
+
+
+<%- include('../admin/layouts/adminFooter.ejs')%>

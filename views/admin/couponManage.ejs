@@ -1,0 +1,209 @@
+<%- include('../admin/layouts/adminHeader.ejs')%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<!-- Add New Address-->
+<form class="needs-validation modal fade" action="/add-coupon" method="post" id="add-coupon" tabindex="-1" novalidate>
+    <div class="modal-dialog modal-dialog-centered"> 
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Coupon</h5>
+          <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row gx-4 gy-3">
+            <div class="col-sm-12">
+              <label class="form-label" for="name">Coupon Code</label>
+              <input class="form-control" type="text" name="couponCode" id="name" required>
+              <div class="invalid-feedback">Please fill coupon code!</div>
+            </div>
+            <div class="col-sm-12">
+              <label class="form-label" for="discount">Discount Amount</label>
+              <input class="form-control" type="number" name="discount" id="discount" required>
+              <div class="invalid-feedback">Please fill discount amount!</div>
+            </div>
+            <div class="col-sm-12">
+              <label class="form-label" for="minimum">Minimum Amount</label>
+              <input class="form-control" type="number"id="minimum" name="minimum" required>
+              <div class="invalid-feedback">Please fill minimum amount!</div>
+            </div>
+            <div class="col-sm-12">
+                <label class="form-label" for="exprie">Expire Date</label>
+                <input class="form-control" type="date" name="expire" id="expire" required>
+                <div class="invalid-feedback">Please add expire date!</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary btn-shadow" type="submit"><i class="ci-cloud-upload fs-lg me-2"></i>UPLOAD</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+
+<!-- Content-->
+<section class="col-lg-9 pt-lg-4 pb-4 mb-3">
+    <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+      <!-- Title-->
+      <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom">
+        <h2 class="h3 py-2 me-2 text-center text-sm-start">Coupons<span class="badge bg-faded-accent fs-sm text-body align-middle ms-2"><%= couponCount %></span></h2>
+        <div>
+          <div class="input-group mb-3">
+            <input class="widget-filter-search form-control rounded-end pe-5" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search"><i class="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+          </div>
+        </div>
+        <div class="text-sm-end mb-3 text-center"><a class="btn btn-primary" href="#add-coupon" data-bs-toggle="modal"><i class="ci-cloud-upload fs-lg me-2"></i>Add Coupon</a></div>
+      </div>
+<!-- Dark table with hover rows -->
+<div class="table-responsive mt-3" style="overflow-x: auto; max-height: 370px;" data-simplebar>
+    <table class="table table-hover" id="myTable">
+      <thead>
+        <tr>
+          <th class="text-center">#</th>
+          <th class="text-center">CODE</th>
+          <th class="text-center">DISCOUNT</th>
+          <th class="text-center">MINIMUM</th>
+          <th class="text-center">EXPIRE</th>
+          <th class="text-center">ACTION</th>
+        </tr>
+      </thead>
+      <% coupon.forEach((cp,i)=> { %>
+      <tbody>
+        <tr>
+          <th class="py-3 text-center align-middle" scope="row"><%= i+1 %></th>
+          <td class="py-3 text-center align-middle"><span class="fw-medium"><%= cp.couponCode %></span></td>
+          <td class="py-3 text-center align-middle"><span class="text-success">₹<%= cp.discountAmount %></span></td>
+          <td class="py-3 text-center align-middle"><span class="text-accent">₹<%= cp.minimumAmount %></span></td>
+          <td class="py-3 text-center align-middle"><%= cp.expiryDate.toLocaleDateString() %></td>
+          <td class="py-3 text-center align-middle">
+            <form action="/delete-coupon/<%= cp._id %>" method="post">
+              <button class="btn bg-faded-danger btn-icon" type="submit" data-bs-toggle="tooltip" title="Delete"><i class="ci-trash text-danger"></i></button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+      <% }) %>
+    </table>
+
+
+  </div>
+
+  <!-- Pagination-->
+  <nav id="pagination" class="d-flex justify-content-between pt-4" aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="page-item"><a id="prev" class="page-link"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+    </ul>
+
+
+    <div class="bg-light shadow-lg rounded-3 w-20">
+      <div class="d-flex justify-content-between align-items-center">
+    
+        <div><a class="btn btn-outline-accent" href="#select-pagination" data-bs-toggle="collapse" id="page-number"></a></div>
+    
+      </div>
+      <!-- Toolbar with expandable filters-->
+      <div class="collapse" id="select-pagination">
+
+              <select class="form-select" id="rows-per-page">
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+    
+      </div>
+    </div>
+    <ul class="pagination">
+      <li class="page-item"><a id="next" class="page-link" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+    </ul>
+  </nav>
+    </div>
+</section>
+</div>
+</div>
+</div>
+</main>
+
+
+
+<script>
+
+  $(document).ready(function() {
+    var table = $('#myTable');
+    var rowsPerPage = $('#rows-per-page').val();
+    var currentPage = 0;
+    
+    function showRows() {
+      var rows = table.find('tbody tr');
+      var numRows = rows.length;
+      var numPages = Math.ceil(numRows / rowsPerPage);
+      
+      if (numPages == 0) {
+        currentPage = 0;
+      } else if (currentPage >= numPages) {
+        currentPage = numPages - 1;
+      }
+      
+      var startIndex = currentPage * rowsPerPage;
+      var endIndex = Math.min(startIndex + rowsPerPage, numRows);
+      
+      rows.hide();
+      rows.slice(startIndex, endIndex).show();
+      
+      $('#page-number').text('Page ' + (currentPage + 1) + ' of ' + numPages);
+    }
+    
+    $('#next').click(function() {
+      currentPage++;
+      showRows();
+    });
+    
+    $('#prev').click(function() {
+      if(currentPage>=1){
+      currentPage--;
+      }
+      showRows();
+    });
+    
+    $('#rows-per-page').change(function() {
+      rowsPerPage = $(this).val();
+      currentPage = 0;
+      showRows();
+    });
+    
+    showRows();
+  });
+  
+  
+  </script>
+
+<script>
+  function searchTable() {
+    var input, filter, table, tbody, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tbody = table.getElementsByTagName("tbody");
+    for (i = 0; i < tbody.length; i++) {
+      tr = tbody[i].getElementsByTagName("tr");
+      for (j = 0; j < tr.length; j++) {
+        td = tr[j].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[j].style.display = "";
+          } else {
+            tr[j].style.display = "none";
+          }
+        }
+      }
+    }
+  }
+</script>
+
+<%- include('../admin/layouts/adminFooter.ejs')%>

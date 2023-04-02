@@ -1,0 +1,299 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<form class="needs-validation modal fade" action="/return-order" method="post" id="return-reason" tabindex="-1" novalidate>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Return Form</h5>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gx-4 gy-3">
+          <div class="col-sm-12">
+            <label class="form-label" for="reason">Reason for Return</label>
+            <textarea class="form-control" name="reason" rows="3" id="reason" required></textarea>
+            <div class="invalid-feedback">Please fill your reason!</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary btn-shadow" type="submit"><i class="ci-check-circle fs-lg me-2"></i>SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/account">Account</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">Orders History</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">My Orders</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+      <!-- Sidebar-->
+      <aside class="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
+        <div class="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
+          <div class="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
+            <div class="d-md-flex align-items-center">
+              <!-- <div class="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0" style="width: 6.375rem;"><img class="rounded-circle" src="img/shop/account/avatar.jpg" alt="Susan Gardner"></div> -->
+              <div class="ps-md-3">
+                <h3 class="fs-base mb-0"><%= userData.name %></h3><span class="text-accent fs-sm"><%= userData.email %></span>
+              </div>
+            </div><a class="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0" href="#account-menu" data-bs-toggle="collapse" aria-expanded="false"><i class="ci-menu me-2"></i>Account Menu</a>
+          </div>
+          <div class="d-lg-block collapse" id="account-menu">
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">DASHBOARD</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0 bg-faded-accent"><a class="nav-link-style d-flex align-items-center px-4 py-3 active" href="/order"><i class="ci-bag opacity-60 me-2"></i>Orders<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/wishlist"><i class="ci-heart opacity-60 me-2"></i>Wishlist<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/discount"><i class="ci-discount opacity-60 me-2"></i>Coupons<span class="fs-sm text-muted ms-auto"></span></a></li>
+            </ul>
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">ACCOUNT</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/account"><i class="ci-user opacity-60 me-2"></i>Profile Info</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/change-password"><i class="ci-loading opacity-60 me-2"></i>Change Password</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/address"><i class="ci-location opacity-60 me-2"></i>Addresses</a></li>
+              <li class="d-lg-none border-top mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/userlogout"><i class="ci-sign-out opacity-60 me-2"></i>SIGN OUT</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <section class="col-lg-8">
+        <!-- Toolbar-->
+    <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
+        <div class="d-flex align-items-center">
+        </div>
+            <a class="btn btn-danger btn-sm" href="/userlogout"><i class="ci-sign-out me-2"></i>SIGN OUT</a>
+      </div>
+
+
+    <!-- Orders list-->
+
+    <div class="table-responsive fs-md mb-4 me-0" style="overflow-x: auto; max-height: 380px;" data-simplebar>
+      <table class="table table-hover mb-0" id="myTable">
+        <thead>
+          <tr>
+            <th class="text-center">ORDER#</th>
+            <th class="text-center">PRODUCTS</th>
+            <th class="text-center">DATE</th>
+            <th class="text-center">PAYMENT</th>
+            <th class="text-center">TOTAL</th>
+            <th class="text-center">STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% orderDetails.forEach((orderData,i) => {%>
+          <tr>
+            <th class="py-3 text-center align-middle fs-xs" scope="row">
+              <a class="nav-link-style" href="/order-detail/<%= orderData._id %>"><%= orderData._id %></a>
+            </th>
+            <td class="py-3 text-center align-middle">
+                <% orderData.products.forEach((orderData,i) => {%>
+                  <a href="/productdetials/<%= orderData.product._id %>/<%= orderData.product.category._id %>" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-html="true" data-bs-content="<div class='d-flex align-items-center'>
+                    <a class='d-block flex-shrink-0'><img src='/productImages/<%= orderData.product.image[0] %>' class='rounded-1' width='96' alt='Product'></a>
+                    <div class='ps-2'>
+                      <h6 class='widget-product-title'><a href='#'><%= orderData.product.name %></a></h6>
+                      <div class='widget-product-meta'><span class='text-accent me-2'>₹<%= orderData.price %></span><span class='text-muted me-2'>x <%= orderData.quantity %> =</span><span class='fs-sm text-success'>₹<% total = orderData.price*orderData.quantity %><%=total%></span></div>
+                    </div>
+                  </div>">
+                    <img class="rounded-3 mb-2" src="productimages/<%= orderData.product.image[0]%>"  width="60" alt="Product1"><br>
+                  </a>
+                <% }) %>
+            </td>
+            <td class="py-3 text-center align-middle"><%=orderData.date.toLocaleDateString()%></td>
+            <% if(orderData.paymentMethod=="COD"){%>
+              <td class="py-3 text-center align-middle">COD<br><span class="badge bg-warning rounded-pill m-0" style="text-transform: uppercase;"><%=orderData.paymentStatus%></span></td>
+            <% } else if(orderData.paymentMethod=="Online Payment") { %>
+              <td class="py-3 text-center align-middle">Online<br><span class="badge bg-warning rounded-pill m-0" style="text-transform: uppercase;"><%=orderData.paymentStatus%></span></td>
+            <% } else { %>
+              <td class="py-3 text-center align-middle">Wallet<br><span class="badge bg-warning rounded-pill m-0" style="text-transform: uppercase;"><%=orderData.paymentStatus%></span></td>
+            <% } %>
+            <td class="py-3 text-center align-middle"><span class="text-accent">₹<%=orderData.Subtotal%></span></td>
+          
+            <% if(orderData.orderStatus == "Placed"){ %>
+                <td class="py-3 text-center align-middle"><span class="badge bg-info rounded-pill m-0 mb-2" id="status">PLACED</span><br>
+                   <button type="button" onclick="cancelOrder('<%=orderData._id %>')" class="btn btn-danger rounded-pill btn-tag m-0"><span class="fs-xs text-white">Cancel Order</span></button>
+                </td>
+              <% } else if(orderData.orderStatus == "Approved"){ %>
+                <td class="py-3 text-center align-middle"><span class="badge bg-info rounded-pill m-0 mb-2" id="status">APPROVED</span><br>
+                  <button type="button" onclick="cancelOrder('<%=orderData._id %>')" class="btn btn-danger rounded-pill btn-tag m-0"><span class="fs-xs text-white">Cancel Order</span></button>
+               </td>
+              <% } else if(orderData.orderStatus == "Packed"){ %>
+                <td class="py-3 text-center align-middle"><span class="badge bg-info rounded-pill m-0 mb-2" id="status">PACKED</span><br>
+                  <button type="button" onclick="cancelOrder('<%=orderData._id %>')" class="btn btn-danger rounded-pill btn-tag m-0"><span class="fs-xs text-white">Cancel Order</span></button>
+               </td>
+              <% } else if(orderData.orderStatus == "Shipped"){ %>
+                <td class="py-3 text-center align-middle"><span class="badge bg-info rounded-pill m-0 mb-2" id="status">SHIPPED</span><br>
+                  <button type="button" onclick="cancelOrder('<%=orderData._id %>')" class="btn btn-danger rounded-pill btn-tag m-0"><span class="fs-xs text-white">Cancel Order</span></button>
+               </td>
+            <% } else if(orderData.orderStatus == "Delivered"){ %>
+
+                <td class="py-3 text-center align-middle"><span class="badge bg-success rounded-pill m-0 mb-2">DELIVERED</span><br>
+                <div class="btn-group dropdown-center">
+
+                  <button type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-primary rounded-pill btn-tag m-0"><span class="fs-xs text-white">Return Order</span></button>
+
+                    <div class="dropdown-menu rounded-pill m-0 mb-1 p-0">
+
+                    <form action="/return-order" method="post">
+                            <div class="input-group">
+                              <input type="text" class="d-none" name="orderId" value="<%=orderData._id %>" required>
+                              <input class="widget-filter-search rounded-pill fs-xs form-control" type="text" name="reason" id="myInput" placeholder="Reason" required>
+                              <button class="btn bg-none btn-icon position-absolute top-50 end-0 translate-middle-y fs-lg" type="submit" data-bs-toggle="tooltip" title="Submit"><i class="ci-check-circle text-info"></i></button>
+                            </div>
+                      </form>
+                      </div>
+                      </div>
+                </td>
+            <% }else if(orderData.orderStatus == "Canceled"){%>
+                <td class="py-3 text-center align-middle"><span class="badge bg-dark rounded-pill m-0">CANCELED</span></td>
+            <% }else if(orderData.orderStatus == "Rejected"){%>
+                <td class="py-3 text-center align-middle"><span class="badge bg-danger rounded-pill m-0">REJECTED</span></td>
+            <% }else if(orderData.orderStatus == "Return Request"){%>
+                <td class="py-3 text-center align-middle"><span class="badge bg-accent rounded-pill m-0">RETURN PROCESSING</span></td>
+            <% }else if(orderData.orderStatus == "Returned"){%>
+                <td class="py-3 text-center align-middle"><span class="badge bg-primary rounded-pill m-0">RETURNED</span></td>
+            <% }else if(orderData.orderStatus == "Return Rejected"){%>
+                <td class="py-3 text-center align-middle"><span class="badge bg-danger rounded-pill m-0">RETURN REJECTED</span></td>
+            <% } %>
+          </tr>
+          <%  }); %>
+          
+        </tbody>
+      </table>
+    </div>
+
+      <!-- Pagination-->
+    <nav id="pagination" class="d-flex justify-content-between pt-2" aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item"><a id="prev" class="page-link"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+      </ul>
+
+
+      <div class="bg-light shadow-lg rounded-3 w-20">
+        <div class="d-flex justify-content-between align-items-center">
+      
+          <div><a class="btn btn-outline-accent" href="#select-pagination" data-bs-toggle="collapse" id="page-number"></a></div>
+      
+        </div>
+        <!-- Toolbar with expandable filters-->
+        <div class="collapse" id="select-pagination">
+
+                <select class="form-select" id="rows-per-page">
+                  <option value="5" selected>5</option>
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+      
+        </div>
+      </div>
+      <ul class="pagination">
+        <li class="page-item"><a id="next" class="page-link" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+      </ul>
+    </nav>
+
+</div>
+</div>
+</main>
+
+  <script>
+      function cancelOrder(orderId){
+          console.log(orderId);
+          $.ajax({
+              url:'/cancelOrder',
+              data:{
+                  orderId:orderId,
+                  
+              },
+              method:'post',
+              success:(response)=>{
+
+
+
+              }
+          }).done((data)=>{
+              console.log(data);
+              location.reload()
+           
+          })
+      }
+
+  </script>
+
+<script>
+
+  $(document).ready(function() {
+    var table = $('#myTable');
+    var rowsPerPage = $('#rows-per-page').val();
+    var currentPage = 0;
+    
+    function showRows() {
+      var rows = table.find('tbody tr');
+      var numRows = rows.length;
+      var numPages = Math.ceil(numRows / rowsPerPage);
+      
+      if (numPages == 0) {
+        currentPage = 0;
+      } else if (currentPage >= numPages) {
+        currentPage = numPages - 1;
+      }
+      
+      var startIndex = currentPage * rowsPerPage;
+      var endIndex = Math.min(startIndex + rowsPerPage, numRows);
+      
+      rows.hide();
+      rows.slice(startIndex, endIndex).show();
+      
+      $('#page-number').text('Page ' + (currentPage + 1) + ' of ' + numPages);
+    }
+    
+    $('#next').click(function() {
+      currentPage++;
+      showRows();
+    });
+    
+    $('#prev').click(function() {
+      if(currentPage>=1){
+      currentPage--;
+      }
+      showRows();
+    });
+    
+    $('#rows-per-page').change(function() {
+      rowsPerPage = $(this).val();
+      currentPage = 0;
+      showRows();
+    });
+    
+    showRows();
+  });
+  
+  
+  </script>
+
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

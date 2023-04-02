@@ -1,0 +1,308 @@
+<%- include('../admin/layouts/adminHeader.ejs')%>
+
+
+
+<form class="needs-validation modal fade" action="/addproduct" method="post" enctype="multipart/form-data" id="add-product" tabindex="-1" novalidate>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Product</h5>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gx-4 gy-3">
+          <div class="col-sm-12">
+            <div class="file-drop-area">
+              <div class="file-drop-icon ci-cloud-upload"></div><span class="file-drop-message">Drag and drop here to upload product image</span>
+              <div class="file-drop-preview rounded" id="preview-container" style="display: flex; flex-direction: row; justify-content: center; width: 80px;">
+              </div>
+              
+              <input class="file-drop-input" type="file" name="product_images" id="product_images" multiple>
+              <button class="file-drop-btn btn btn-primary btn-sm mb-2" type="button">Select File</button>
+            </div>
+            
+          </div>
+          
+        <div class="col-sm-12">
+          <div>
+            <label class="form-label" for="unp-product-name">Product Name</label>
+            <input class="form-control" name="name" type="text"  required id="unp-product-name">
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div>
+            <label class="form-label" for="unp-product-description">Product Description</label>
+            <textarea class="form-control" name="description" rows="3" id="unp-product-description" required></textarea>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <label class="form-label" for="unp-standard-price">Price</label>
+              <div class="input-group"><span class="input-group-text"><i class="ci-rupee"></i></span>
+                <input class="form-control" name="price" type="number" fdprocessedid="mvkd67" required id="unp-standard-price">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div>
+                <label class="form-label" for="unp-standard-price">Category</label>
+                <select class="form-select me-2" name="category" fdprocessedid="snbdje" id="unp-category" required>
+                  <option value="">Select Category</option>
+                  <% category.forEach((cate)=>{ %>
+                    <option value="<%= cate._id %>"> <%= cate.categoryName %></option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-6">
+              <label class="form-label" for="unp-standard-price">Stock</label>
+              <div class="input-group"><span class="input-group-text"><i class="ci-package"></i></span>
+                <input class="form-control" name="stock" type="number" fdprocessedid="f8vluf" required id="unp-standard-price">
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div>
+                <label class="form-label" for="unp-standard-price">Status</label>
+                <select class="form-select me-2" name="status" fdprocessedid="vhuc4m" id="unp-category" required>
+                  <option value="">Select Status</option>
+                  <option value="In Stock">In Stock</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary btn-shadow" type="submit"><i class="ci-cloud-upload fs-lg me-2"></i>UPLOAD</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<!-- Content-->
+<section class="col-lg-9 pt-lg-4 pb-4 mb-3">
+  <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+    <!-- Title-->
+    <div class="d-sm-flex flex-wrap justify-content-between align-items-center border-bottom">
+      <h2 class="h3 py-2 me-2 text-center text-sm-start">Products<span class="badge bg-faded-accent fs-sm text-body align-middle ms-2"><%= productCount %></span></h2>
+      <div>
+      <div class="input-group mb-3">
+        <input class="widget-filter-search form-control rounded-end pe-5" type="text" id="myInput" onkeyup="searchTable()" placeholder="Search"><i class="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+
+      </div>
+    </div>
+      <div class="text-sm-end mb-3 text-center"><a class="btn btn-primary" href="#add-product" data-bs-toggle="modal"><i class="ci-cloud-upload fs-lg me-2"></i>Add Product</a></div>
+    </div>
+<!-- Dark table with hover rows -->
+<div class="table-responsive mt-3" style="overflow-x: auto; max-height: 370px;" data-simplebar>
+  <table class="table table-hover" id="myTable">
+    <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">IMAGE</th>
+        <th class="text-center">NAME</th>
+        <th class="text-center">CATEGORY</th>
+        <th class="text-center">PRICE</th>
+        <th class="text-center">STOCK</th>
+        <th class="text-center">STATUS</th>
+        <th class="text-center">ACTION</th>
+      </tr>
+    </thead>
+    <% products.forEach(function(product,i){ %>
+    <tbody>
+      <tr>
+        <th class="py-3 text-center align-middle" scope="row"><%= i+1 %></th>
+        <td class="py-3 text-center align-middle">
+          <a href="#" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-trigger="hover" data-bs-html="true" data-bs-content="<div><span><img src='productimages/<%= product.image[1] %>' width='80' alt='Product2'><img src='productimages/<%= product.image[2] %>' width='80' alt='Product3'><img src='productimages/<%= product.image[3] %>' width='80' alt='Product4'></span></div>">
+            <img class="rounded-3" src="productimages/<%= product.image[0] %>"  width="120" alt="Product1">
+          </a>
+        </td>
+        <td class="py-3 text-center align-middle" ><span class="fw-medium fs-sm"><%= product.name %></span></td>
+        <td class="py-3 text-center align-middle"><span class="fw-lighter "style="text-transform: capitalize;"><%= product.category.categoryName %></span></td>
+        <td class="py-3 text-center align-middle"><span class="text-accent">₹<%= product.price %></span></td>
+        <td class="py-3 text-center align-middle"><span class="text-muted"><%= product.stock %></span></td>
+
+        <% if (product.status=="In Stock" ) { %>
+          <td class="py-3 text-center align-middle"><span class="text-success">In stock</span></td>
+          <% } else { %>
+        <td class="py-3 text-center align-middle"><span class="text-danger">Out of Stock</span></td>
+          <% } %>
+
+        <td class="py-3 text-center align-middle">
+          <div class="d-flex flex-lg-row justify-content-center">
+              <form action="/editproduct/<%= product._id %>" method="get">
+                <button class="btn bg-faded-info btn-icon me-2" type="submit" data-bs-toggle="tooltip" title="Edit"><i class="ci-edit text-info"></i></button>
+              </form>
+              <form action="/deleteproduct/<%= product._id %>" method="post">
+                <button class="btn bg-faded-danger btn-icon" type="submit" data-bs-toggle="tooltip" title="Delete"><i class="ci-trash text-danger"></i></button>
+              </form>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <% }) %>
+  </table>
+
+
+</div>
+
+
+<!-- Pagination-->
+<nav id="pagination" class="d-flex justify-content-between pt-4" aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="page-item"><a id="prev" class="page-link"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+  </ul>
+
+
+  <div class="bg-light shadow-lg rounded-3 w-20">
+    <div class="d-flex justify-content-between align-items-center">
+  
+      <div><a class="btn btn-outline-accent" href="#select-pagination" data-bs-toggle="collapse" id="page-number"></a></div>
+  
+    </div>
+    <!-- Toolbar with expandable filters-->
+    <div class="collapse" id="select-pagination">
+
+            <select class="form-select" id="rows-per-page">
+              <option value="5" selected>5</option>
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+            </select>
+  
+    </div>
+  </div>
+  <ul class="pagination">
+    <li class="page-item"><a id="next" class="page-link" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+  </ul>
+</nav>
+
+  </div>
+
+</section>
+</div>
+</div>
+</div>
+</main>
+
+<script>
+
+$(document).ready(function() {
+var table = $('#myTable');
+var rowsPerPage = $('#rows-per-page').val();
+var currentPage = 0;
+
+function showRows() {
+  var rows = table.find('tbody tr');
+  var numRows = rows.length;
+  var numPages = Math.ceil(numRows / rowsPerPage);
+  
+  if (numPages == 0) {
+    currentPage = 0;
+  } else if (currentPage >= numPages) {
+    currentPage = numPages - 1;
+  }
+  
+  var startIndex = currentPage * rowsPerPage;
+  var endIndex = Math.min(startIndex + rowsPerPage, numRows);
+  
+  rows.hide();
+  rows.slice(startIndex, endIndex).show();
+  
+  $('#page-number').text('Page ' + (currentPage + 1) + ' of ' + numPages);
+}
+
+$('#next').click(function() {
+  currentPage++;
+  showRows();
+});
+
+$('#prev').click(function() {
+  if(currentPage>=1){
+  currentPage--;
+  }
+  showRows();
+});
+
+$('#rows-per-page').change(function() {
+  rowsPerPage = $(this).val();
+  currentPage = 0;
+  showRows();
+});
+
+showRows();
+});
+
+
+</script>
+
+<script>
+  function searchTable() {
+    var input, filter, table, tbody, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tbody = table.getElementsByTagName("tbody");
+    for (i = 0; i < tbody.length; i++) {
+      tr = tbody[i].getElementsByTagName("tr");
+      for (j = 0; j < tr.length; j++) {
+        td = tr[j].getElementsByTagName("td")[1];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[j].style.display = "";
+          } else {
+            tr[j].style.display = "none";
+          }
+        }
+      }
+    }
+  }
+
+  // Get the file input element
+const input = document.getElementById('product_images');
+
+// Get the preview container element
+const previewContainer = document.getElementById('preview-container');
+
+// Listen for changes to the file input element
+input.addEventListener('change', function() {
+  // Clear the preview container
+  previewContainer.innerHTML = '';
+
+  // Loop through each selected file
+  for (let i = 0; i < input.files.length; i++) {
+    const file = input.files[i];
+
+    // Create a new FileReader object
+    const reader = new FileReader();
+
+    // Set the callback function for when the file has been read
+    reader.onload = function() {
+      // Create a new image element
+      const img = document.createElement('img');
+
+      // Set the source of the image to the data URL
+      img.src = reader.result;
+
+      // Add the image to the preview container
+      previewContainer.appendChild(img);
+    };
+
+    // Read the file as a data URL
+    reader.readAsDataURL(file);
+  }
+});
+
+</script>
+
+<%- include('../admin/layouts/adminFooter.ejs')%>

@@ -1,0 +1,215 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/account">Account</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">Wishlist</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">My Wishlist</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+      <!-- Sidebar-->
+      <aside class="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
+        <div class="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
+          <div class="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
+            <div class="d-md-flex align-items-center">
+              <!-- <div class="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0" style="width: 6.375rem;"><img class="rounded-circle" src="img/shop/account/avatar.jpg" alt="Susan Gardner"></div> -->
+              <div class="ps-md-3">
+                <h3 class="fs-base mb-0"><%= userData.name %></h3><span class="text-accent fs-sm"><%= userData.email %></span>
+              </div>
+            </div><a class="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0" href="#account-menu" data-bs-toggle="collapse" aria-expanded="false"><i class="ci-menu me-2"></i>Account Menu</a>
+          </div>
+          <div class="d-lg-block collapse" id="account-menu">
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">DASHBOARD</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/order"><i class="ci-bag opacity-60 me-2"></i>Orders<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="border-bottom mb-0 bg-faded-accent"><a class="nav-link-style d-flex align-items-center px-4 py-3 active" href="/wishlist"><i class="ci-heart opacity-60 me-2"></i>Wishlist<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/discount"><i class="ci-discount opacity-60 me-2"></i>Coupons<span class="fs-sm text-muted ms-auto"></span></a></li>
+            </ul>
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">ACCOUNT</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/account"><i class="ci-user opacity-60 me-2"></i>Profile Info</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/change-password"><i class="ci-loading opacity-60 me-2"></i>Change Password</a></li>
+              <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/address"><i class="ci-location opacity-60 me-2"></i>Addresses</a></li>
+              <li class="d-lg-none border-top mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/userlogout"><i class="ci-sign-out opacity-60 me-2"></i>SIGN OUT</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <section class="col-lg-8">
+        <!-- Toolbar-->
+        <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+          <h6 class="fs-base text-light mb-0">List of items you added to wishlist: :</h6>
+            <a class="btn btn-danger btn-sm" href="/userlogout"><i class="ci-sign-out me-2"></i>SIGN OUT</a>
+        </div>
+        <!-- Wishlist-->
+        <!-- Item-->
+        <% if(wishlist.wishlist.length==0){%>
+
+          <!-- Alert with background image -->
+          <div class="container mb-2 mb-md-4">
+            <div class="row">
+          <div class="alert alert-dismissible bg-size-cover fade show text-center py-5"style="background-image: url(https://www.emp.de/on/demandware.static/Sites-GLB-Site/-/default/dw35b1a482/images/logos/empty-cart.gif)" role="alert">
+            <i class="ci-heart d-block text-muted my-4" style="font-size: 3rem;"></i>
+            <h2 class="text-muted text-shadow">No Items in Wishlist !</h2>
+            <h4 class="text-muted fs-lg text-shadow mb-4 pb-2">Seems like you don't have wishes here</h4>
+            <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>Make a Wish</a>
+          </div>
+          </div>
+          </div>
+
+        <% }else{  %>
+        <div style="overflow-x: auto; max-height: 470px;" data-simplebar>
+        <% wishlist.wishlist.forEach((w)=>{ %>
+        <div class="d-sm-flex justify-content-between mt-lg-4 mb-4 pb-3 pb-sm-4 border-bottom" id="<%= w.id %>wishItem">
+          <div class="d-block d-sm-flex align-items-start text-center text-sm-start"><a class="d-block flex-shrink-0 mx-auto me-sm-4" href="/productdetials/<%= w.product_id._id %>/<%= w.product_id.category._id %>" style="width: 10rem;"><img src="/productimages/<%= w.product_id.image[0] %>" class="rounded-3" alt="Product"></a>
+            <div class="pt-2">
+              <h3 class="product-title fs-base mb-2"><a href="/productdetials/<%= w.product_id._id %>/<%= w.product_id.category._id %>"><%= w.product_id.name %></a></h3>
+              <div class="fs-sm"><span class="text-muted me-1">Stock :</span><%= w.product_id.stock %></div>
+              <div class="fs-lg text-accent pt-2">₹<%= w.product_id.price %></div>
+            </div>
+          </div>
+          <div class="pt-2 ps-sm-3 mx-auto mx-sm-0 text-center">
+            <% if( w.product_id.status == "In Stock"){ %>
+              <button class="btn btn-outline-primary btn-sm" onclick="addToCart('<%= w.product_id._id%>',this)"><i class="ci-cart me-1"></i>Add Cart</button><br>
+              <% }else{ %>
+              <button class="btn btn-danger btn-sm" disabled><i class="ci-locked me-1"></i>Sold Out</button><br>
+              <% } %>
+            <button class="btn btn-outline-danger btn-sm mt-2" onclick="deleteWishlist('<%= w.id %>')"><i class="ci-trash me-2"></i>Remove</button>
+           
+          </div>
+        </div>
+        <% })%>
+      </div>
+      <% } %>
+      </section>
+    </div>
+  </div>
+</main>
+
+
+
+<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content bg-faded-success border-success">
+      <div class="modal-header bg-faded-success border-success">
+        <h5 class="modal-title text-white" id="cartModalLabel">Success !</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center text-success">
+        <i class="ci-check-circle d-block text-success text-shadow mb-3" style="font-size: 3rem;"></i>
+        <h5 class="text-success text-shadow">Added to Cart</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="existModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content bg-faded-warning border-warning">
+      <div class="modal-header bg-faded-warning border-warning">
+        <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center text-warning">
+        <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
+        <h5 class="text-warning text-shadow">Already in Cart</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="emptyWish" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+
+        <div class="alert alert-dismissible bg-size-cover fade show text-center mb-0 py-5"style="background-image: url(https://www.emp.de/on/demandware.static/Sites-GLB-Site/-/default/dw35b1a482/images/logos/empty-cart.gif)" role="alert">
+          <i class="ci-heart d-block text-muted my-4" style="font-size: 3rem;"></i>
+          <h2 class="text-muted text-shadow">No Items in Wishlist !</h2>
+          <h4 class="text-muted fs-lg text-shadow mb-4 pb-2">Seems like you don't have wishes here</h4>
+          <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>Make a Wish</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+
+  function addToCart(proId, button){
+
+      $.ajax({
+
+          url : '/add-to-cart/'+proId,
+          method : 'post',
+          success : (response) => {
+
+              if(response.added){
+                $('#cartModal').modal('show');
+              }
+              if(response.exists){
+                $('#existModal').modal('show');
+              }
+
+          }
+
+      })
+
+  }
+
+  function deleteWishlist(id) {
+
+      $.ajax({
+        type: "POST",
+        url: "/delete-wishlist",
+        data: {
+          id,
+        },
+        dataType: "json",
+        encode: true,
+      }).done(function (data) {
+
+
+        if(data == 'remove'){
+
+          $("#" + id + "wishItem").remove();
+          $('#emptyWish').modal('show');
+
+        } if ( data == 'added'){
+
+        $("#" + id + "wishItem").remove();
+
+        }
+        cartCout();
+
+      });
+}
+
+</script>
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

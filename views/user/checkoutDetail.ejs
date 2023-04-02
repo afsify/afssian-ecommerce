@@ -1,0 +1,448 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/shop">Shop</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">Checkout</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">Checkout</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+      <section class="col-lg-8">
+        <!-- Steps-->
+        <div class="steps steps-light pt-2 pb-3 mb-5"><a class="step-item active" href="/shop">
+            <div class="step-progress"><span class="step-count">1</span></div>
+            <div class="step-label"><i class="ci-bag"></i>Shop</div></a><a class="step-item active" href="/cart">
+            <div class="step-progress"><span class="step-count">2</span></div>
+            <div class="step-label"><i class="ci-cart"></i>Cart</div></a><a class="step-item active current" href="/checkout-detail">
+            <div class="step-progress"><span class="step-count">3</span></div>
+            <div class="step-label"><i class="ci-user-circle"></i>Details</div></a><a class="step-item disabled">
+            <div class="step-progress"><span class="step-count">4</span></div>
+            <div class="step-label"><i class="ci-check-circle"></i>Review</div></a><a class="step-item disabled">
+            <div class="step-progress"><span class="step-count">5</span></div>
+            <div class="step-label"><i class="ci-basket"></i>Orders</div></a>
+        </div>
+        <!-- Author info-->
+        <div class="d-sm-flex justify-content-between align-items-center bg-secondary p-4 rounded-3 mb-grid-gutter">
+          <div class="d-flex align-items-center">
+            <div class="ps-3">
+              <h3 class="fs-base mb-0"><%= cartBill.name %></h3><span class="text-accent fs-sm"><%= cartBill.email %></span><br><span class="text-dark fs-sm"><%= cartBill.phone %></span>
+            </div>
+          </div><a class="btn btn-light btn-sm btn-shadow mt-3 mt-sm-0" href="/account"><i class="ci-edit me-2"></i>Edit Profile</a>
+        </div>
+        <!-- Shipping address-->
+        <div class="bg-light shadow-lg rounded-3 p-4 mt-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="dropdown"><a class="btn btn-outline-secondary" href="#select-address" data-bs-toggle="collapse"><i class="ci-location fs-base me-1"></i>SELECT</a></div>
+            <div class="d-flex me-1"><h2 class="h6 pt-1 me-5">Shipping Address</h2></div>
+            <div class="d-none d-sm-flex ms-5"><h5 class="mb-0"><span class="badge bg-faded-accent fs-sm text-body align-middle ms-2"><%= cartBill.address.length %></span></h5></div>
+          </div>
+          <!-- Toolbar with expandable filters-->
+          <div class="collapse" id="select-address">
+            <div class="row pt-4">
+                <div class="col-sm-12 mt-3">
+                    <% cartBill.address.forEach((val)=>{ %>
+                          <div class="form-check">
+                            <input class="form-check-input" onclick="selectAddress('<%=val._id %>')" type="radio" id="ex-radio-1" name="radio">
+                            <label class="form-check-label" for="ex-radio-1"><p><b><%= val.name%></b>,
+                              <%= val.house +', '+ val.post +', ' +val.pin+', '+ val.city +', '+ val.district +', '+val.state %></p></label>
+                          </div>
+                    <% }) %>
+                </div>
+            </div>
+          </div>
+        </div>
+
+
+        <h2 class="h6 pb-3 mb-2 mt-5 text-center">BILLING DETAILS</h2>
+
+
+
+        <form class="needs-validation" id="submitForm" tabindex="-1" novalidate>
+                <div class="row gx-4 gy-3">
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectName">Name</label>
+                    <input class="form-control" type="text" name="name" id="selectName" required>
+                    <div class="invalid-feedback">Please fill your name!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectPhone">Phone</label>
+                    <input class="form-control" type="number" name="phone" value="<%= cartBill.phone %>" id="selectPhone" required>
+                    <div class="invalid-feedback">Please fill your phone number!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectHouse">House</label>
+                    <input class="form-control" type="text" name="house" id="selectHouse" required>
+                    <div class="invalid-feedback">Please fill your house!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectPost">Post</label>
+                    <input class="form-control" type="text" name="post" id="selectPost"  required>
+                    <div class="invalid-feedback">Please add your post!</div>
+                  </div>
+                  <div class="col-sm-6">
+                      <label class="form-label" for="selectPin">Pin</label>
+                      <input class="form-control" type="number" name="pin" id="selectPin" required>
+                      <div class="invalid-feedback">Please add your pin!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectCity">City</label>
+                    <input class="form-control" type="text" name="city" id="selectCity" required>
+                    <div class="invalid-feedback">Please fill your city!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectDistrict">District</label>
+                    <input class="form-control" type="text" name="district" id="selectDistrict" required>
+                    <div class="invalid-feedback">Please fill your district!</div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label" for="selectState">State</label>
+                    <input class="form-control" type="text" name="state" id="selectState" required>
+                    <div class="invalid-feedback">Please fill your state!</div>
+                  </div>
+                </div>
+
+                <% let totalPrice = 0 %>
+                <% cart.cart.forEach((cart)=>{ %>
+                <% totalPrice += cart.product_id.price * cart.quantity %>
+                <% })%>
+
+                <input type="number" class="d-none" name="totalPrice" id="offerPrice" value="<%= totalPrice %>" required>
+
+
+
+
+
+        <!-- Payment methods accordion-->
+<h2 class="h6 pb-3 mb-2 mt-4 text-center">Payment Method</h2>
+
+
+<% if(cartBill.wallet >= totalPrice) { %>
+
+<div class="accordion mb-2" id="payment-method">
+
+  <div class="accordion-item">
+    <h3 class="accordion-header"><a class="accordion-button collapsed" href="#online" data-bs-toggle="collapse"><i class="ci-message me-2  align-middle"></i>Online Payment</a></h3>
+    <div class="accordion-collapse collapse" id="online" data-bs-parent="#payment-method">
+      <div class="accordion-body">
+        <p class="fs-sm"><span class="fw-medium">We Accept Online Payment through Razorpay :</span></p>
+        <div class="form-check">
+          <input class="form-check-input paymentMethod" type="radio" name="payment" id="optionsRadios2" value="onlinePayment">
+          <label class="form-check-label" for="optionsRadios2">
+            Select Online Payment
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <h3 class="accordion-header"><a class="accordion-button" href="#wallet" data-bs-toggle="collapse" aria-expanded="true"><i class="ci-wallet me-2  align-middle"></i>Wallet Payment</a></h3>
+    <div class="accordion-collapse collapse show" id="wallet" data-bs-parent="#payment-method">
+      <div class="accordion-body">
+        <p class="fs-sm"><span class="fw-medium">Your Wallet Balance : <span class="text-success">₹<%= cartBill.wallet %></span></span></p>
+        <div class="form-check">
+          <input class="form-check-input paymentMethod" type="radio" name="payment" id="optionsRadios3" value="walletPayment" checked>
+          <label class="form-check-label" for="optionsRadios3">
+            Select Wallet Payment
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header"><a class="accordion-button collapsed" href="#cod" data-bs-toggle="collapse"><i class="ci-rupee me-2 align-middle"></i>Cash on Delivery</a></h3>
+        <div class="accordion-collapse collapse" id="cod" data-bs-parent="#payment-method">
+          <div class="accordion-body fs-sm">
+            <p><span class="fw-medium">Deliver into the Provided Address :</span></p>
+            <div class="form-check">
+            <input class="form-check-input paymentMethod" type="radio" name="payment" id="optionsRadios1" value="COD">
+              <label class="form-check-label" for="optionsRadios1">
+                Select Cash on Delivery
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<% } else { %>
+
+
+<div class="accordion mb-2" id="payment-method">
+
+  <div class="accordion-item">
+    <h3 class="accordion-header"><a class="accordion-button collapsed" href="#online" data-bs-toggle="collapse"><i class="ci-message me-2  align-middle"></i>Online Payment</a></h3>
+    <div class="accordion-collapse collapse" id="online" data-bs-parent="#payment-method">
+      <div class="accordion-body">
+        <p class="fs-sm"><span class="fw-medium">We Accept Online Payment through Razorpay :</span></p>
+        <div class="form-check">
+          <input class="form-check-input paymentMethod" type="radio" name="payment" id="optionsRadios2" value="onlinePayment">
+          <label class="form-check-label" for="optionsRadios2">
+            Select Online Payment
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      <div class="accordion-item">
+        <h3 class="accordion-header"><a class="accordion-button" href="#cod" data-bs-toggle="collapse" aria-expanded="true"><i class="ci-rupee me-2 align-middle"></i>Cash on Delivery</a></h3>
+        <div class="accordion-collapse collapse show" id="cod" data-bs-parent="#payment-method">
+          <div class="accordion-body fs-sm">
+            <p><span class="fw-medium">Deliver into the Provided Address :</span></p>
+            <div class="form-check">
+            <input class="form-check-input paymentMethod" type="radio" name="payment" id="optionsRadios1" value="COD" checked>
+              <label class="form-check-label" for="optionsRadios1">
+                Select Cash on Delivery
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<% } %>
+        <!-- Navigation (desktop)-->
+        <div class="d-none d-lg-flex pt-4 mt-3">
+          <div class="w-50 pe-3"><a class="btn btn-secondary d-block w-100" href="/cart"><i class="ci-arrow-left mt-sm-0 me-1"></i><span class="d-none d-sm-inline">Back to Cart</span><span class="d-inline d-sm-none">Back</span></a></div>
+          <div class="w-50 ps-2"><button class="btn btn-primary d-block w-100" type="submit"><span class="d-none d-sm-inline">Place Order</span><span class="d-inline d-sm-none">Next</span><i class="ci-arrow-right mt-sm-0 ms-1"></i></button></div>
+        </div>
+      </form>
+      </section>
+
+
+
+
+      <!-- Sidebar-->
+      <aside class="col-lg-4 pt-4 pt-lg-0 ps-xl-5">
+        <div class="bg-white rounded-3 shadow-lg p-4 ms-lg-auto">
+          <div class="py-2 px-xl-2">
+            <div class="widget mb-3">
+              <h2 class="widget-title text-center">Order Summary</h2>
+              <% let subtotal = 0 %>
+              <% cart.cart.forEach((cart)=>{ %>
+              <div class="d-flex align-items-center pt-2 pb-2 border-bottom"><a class="d-block flex-shrink-0" href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><img src="/productimages/<%= cart.product_id.image[0] %>" class="rounded-1" width="96" alt="Product"></a>
+                <div class="ps-2">
+                  <h6 class="widget-product-title"><a href="#"><%= cart.product_id.name %></a></h6>
+                  <div class="widget-product-meta"><span class="text-accent me-2">₹<%= cart.product_id.price %></span><span class="text-muted me-2">x <%= cart.quantity %> =</span><span class="fs-sm text-success">₹<% total = cart.product_id.price*cart.quantity %><%=total%></span></div>
+                </div>
+              </div>
+              <% subtotal += cart.product_id.price * cart.quantity %>
+              <% })%>
+            </div>
+            <ul class="list-unstyled fs-sm pb-2 border-bottom">
+              <li class="d-flex justify-content-between align-items-center"><span class="me-2">Subtotal :</span><span class="text-end">₹<%= subtotal%></span></li>
+              <div id="offer" style="display: none;"><li class="d-flex justify-content-between align-items-center"><span class="me-2">Discount :</span><span class="text-end"><span>-</span><span id="discount">0</span></span></li></div>
+            </ul>
+            <div class="accordion" id="order-options">
+              <div class="accordion-item">
+                <h3 class="accordion-header"><a class="accordion-button collapsed" href="#promo-code" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="promo-code">Apply Coupon Code</a></h3>
+                <div class="accordion-collapse collapse" id="promo-code" data-bs-parent="#order-options">
+                  <form id="couponForm" class="accordion-body needs-validation" novalidate>
+                    <div class="mb-3 text-center">
+                      <div id="success" class="alert alert-success" role="alert" style="display: none">
+                        Coupon Applied!
+                      </div>
+                      <div id="error"  class="alert alert-danger" role="alert" style="display: none;">
+                        Invalid Coupon!
+                      </div>
+                      <input type="number" id="total" name="total" class="d-none" value="<%= subtotal %>">
+                      <input class="form-control" type="text" id="code"  placeholder="Coupon Code" name="code" required>
+                      <div class="invalid-feedback">Please provide coupon code.</div>
+                    </div>
+                    <button id="apply-coupon" class="btn btn-outline-primary d-block w-100" type="submit">Apply Coupon Code</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <h3 class="fw-normal my-4 text-center"><span>₹</span><span id="subTotal"><%= subtotal %></span><span>/-</span></h3>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <!-- Navigation (mobile)-->
+    <div class="row d-lg-none">
+      <div class="col-lg-8">
+        <div class="d-flex pt-4 mt-3">
+          <div class="w-50 pe-3"><a class="btn btn-secondary d-block w-100" href="/cart"><i class="ci-arrow-left mt-sm-0 me-1"></i><span class="d-none d-sm-inline">Back to Cart</span><span class="d-inline d-sm-none">Back</span></a></div>
+          <div class="w-50 ps-2"><a class="btn btn-primary d-block w-100" href="/Payment"><span class="d-none d-sm-inline">Place Order</span><span class="d-inline d-sm-none">Next</span><i class="ci-arrow-right mt-sm-0 ms-1"></i></a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+
+let clicked = false;
+$('#couponForm').submit((e)=>{
+        e.preventDefault()
+     const code = document.getElementById('code').value
+     const total = document.getElementById('total').innerHTML
+     if(code == ""){
+      document.getElementById('error').style.display='inline'
+      setTimeout(()=> document.getElementById('error').style.display='none',2000)
+     }else{
+         $.ajax({
+            url:'/check-coupon',
+            method:'post',
+            dataType: "json",
+            encode: true,
+            data:
+        
+                $('#couponForm').serialize()+ `&total=${total}`
+            ,
+            success:((response)=>{
+                if(response.status && clicked==false){
+
+                    document.getElementById('success').style.display='inline'
+                    document.getElementById('subTotal').innerHTML=response.total
+                    document.getElementById('offer').style.display='inline'
+                    document.getElementById('discount').innerHTML=response.amount
+                    setTimeout(()=> document.getElementById('success').style.display='none',2000)
+                    clicked=true
+                }else{
+                    document.getElementById('error').style.display='inline'
+                    setTimeout(()=> document.getElementById('error').style.display='none',2000)
+                }
+            })
+          }).done(function(data) {
+
+              $('#offerPrice').val(data.total)
+
+          });
+     }
+    })
+
+    function selectAddress(id) {
+      $(".addchange").attr('class', 'addchange text-primary text-lg-end')
+      $(".addchange").html('select');
+      $.ajax({
+        type: "POST",
+        url: "/select-address",
+        data: {
+          id
+        },
+        dataType: "json",
+        encode: true,
+      }).done(function(data) {
+
+        if (data == "LOGIN FIRST") {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Login first!',
+            footer: '<a href="/login">Go to login</a>'
+          })
+        }
+
+        $('#selectName').val(data.name)
+        $('#selectHouse').val(data.house)
+        $('#selectPost').val(data.post)
+        $('#selectCity').val(data.city)
+        $('#selectDistrict').val(data.district)
+        $('#selectState').val(data.state)
+        $('#selectPin').val(data.pin)
+      });
+      document.getElementById(id + "change").setAttribute('class', 'addchange text-success text-lg-end')
+      document.getElementById(id + "change").innerHTML = '<i class="bi bi-check2-circle"></i>' + 'selected';
+      setTimeout(() => {
+        document.getElementById("alternateAddress").setAttribute('class', 'collapse')
+      }, 2000);
+    }
+
+
+    $("#submitForm").submit((el)=>{
+  el.preventDefault()
+  $.ajax({
+        url:"/submit-checkout",
+        method:'post',
+        data:$('#submitForm').serialize(),
+        success:(response)=>{
+
+          if(response.codsuccess&&response.cod){
+
+            location.href="/checkout-review";
+
+          }else{
+
+            razorPayment(response.order)
+
+          }
+
+        }
+    }).then((data)=>{
+ 
+    })
+  }
+)
+
+function razorPayment(order){
+  var options = {
+    "key": "rzp_test_ieOkJ5vQMeybCb", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "AFSSIAN", //your business name
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id":order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+    "handler":function(response){
+      verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar", //your customer's name
+        "email": "gaurav.kumar@example.com",
+        "contact": "9000090000"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.open();
+}
+
+function verifyPayment(response,order){
+  $.ajax({
+    url:'/verifyPayment',
+    data:{
+      response,
+      order
+    },
+    method:'post',
+    success:(response)=>{
+      if(response.success==true){
+        location.href="/checkout-review"
+      }else{
+        alert("Payment Failed!!")
+      }
+    }
+  })
+}
+
+</script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

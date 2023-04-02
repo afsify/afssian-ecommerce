@@ -1,0 +1,324 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+
+
+<!-- Page Title (Shop Alt)-->
+      <!-- used for shop templates with filters on top-->
+      <div class="bg-dark pt-4 pb-5">
+        <div class="container pt-2 pb-3 pt-lg-3 pb-lg-4">
+          <div class="d-lg-flex justify-content-between pb-3">
+            <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+                  <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+                  <li class="breadcrumb-item text-nowrap"><a href="/shop">Shop</a>
+                  </li>
+                  <li class="breadcrumb-item text-nowrap active" aria-current="page">Products</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+              <h1 class="h3 text-light mb-0">Shop Products</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container pb-5 mb-2 mb-md-4">
+
+
+        <!-- Toolbar-->
+        <div class="bg-light shadow-lg rounded-3 p-4 mt-n5 mb-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="dropdown me-2"><a class="btn btn-outline-secondary" href="#shop-filters" data-bs-toggle="collapse"><i class="ci-filter fs-base me-1"></i>FILTER</a></div>
+            <div class="d-flex">
+              <% if (currentPage == 1) { %>
+              <a class="nav-link-style me-3"><i class="ci-arrow-left"></i></a>
+              <% } else { %>
+              <a class="nav-link-style me-3" href="/shop?page=<%= currentPage-1 %>"><i class="ci-arrow-left"></i></a>
+              <% } %>
+              <span class="fs-md"><%= currentPage %> / <%= Math.ceil(totalPages) %></span>
+              <% if (currentPage == totalPages) { %>
+              <a class="nav-link-style ms-3"><i class="ci-arrow-right"></i></a>
+                <% } else { %>
+              <a class="nav-link-style ms-3" href="/shop?page=<%= currentPage- -1 %>"><i class="ci-arrow-right"></i></a>
+              <% } %>
+            </div>
+            <div class="d-none d-sm-flex"><h5 class="mb-0"><span class="badge bg-accent rounded-pill badge-shadow">TOTAL <%= productCount %></span></h5></div>
+          </div>
+          <!-- Toolbar with expandable filters-->
+          <div class="collapse" id="shop-filters">
+            <div class="row pt-4">
+              <div class="col-lg-4 col-sm-6">
+              </div>
+              <div class="col-lg-4 col-sm-6">
+
+                <!-- Price range-->
+                <!-- <div class="card mb-grid-gutter">
+                  <div class="card-body px-4">
+                    <div class="widget">
+                      <h3 class="widget-title">Price range</h3>
+                      <div class="range-slider" data-start-min="250" data-start-max="680" data-min="0" data-max="1000" data-step="1">
+                        <div class="range-slider-ui"></div>
+                        <div class="d-flex pb-1">
+                          <div class="w-50 pe-2 me-2">
+                            <div class="input-group input-group-sm"><span class="input-group-text">$</span>
+                              <input class="form-control range-slider-value-min" type="text">
+                            </div>
+                          </div>
+                          <div class="w-50 ps-2">
+                            <div class="input-group input-group-sm"><span class="input-group-text">$</span>
+                              <input class="form-control range-slider-value-max" type="text">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+
+
+                <!-- Filter by Brand-->
+                <div class="card mb-grid-gutter">
+                  <div class="card-body px-4">
+                    <div class="widget widget-filter">
+                      <h3 class="widget-title">Categories</h3>
+                      <div class="input-group input-group-sm mb-2">
+                        <input class="widget-filter-search form-control rounded-end pe-5" type="text" placeholder="Search"><i class="ci-search position-absolute top-50 end-0 translate-middle-y fs-sm me-3"></i>
+                      </div>
+                      <ul class="widget-list widget-filter-list list-unstyled pt-1" style="max-height: 11rem;" data-simplebar data-simplebar-auto-hide="false">
+                        <% category.forEach((cate)=>{ %>
+                        <li class="widget-filter-item d-flex justify-content-between align-items-center mb-1">
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="adidas">
+                            <label class="form-check-label widget-filter-item-text" for="adidas"><%= cate.categoryName %></label>
+                          </div><span class="fs-xs text-muted">425</span>
+                        </li>
+                        <% }) %>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6">
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Products grid-->
+        <div class="row pt-3 mx-n2">
+          <!-- Product-->
+          <% if(user){ %>
+
+            <% products.forEach((product) => { %>
+              <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-5">
+                <div class="card product-card">
+                        <% if (JSON.stringify(wishId).includes(product._id)){ %>
+                          <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                            <i class="ci-heart-filled text-danger"></i>
+                          </button>
+                        <% } else { %>
+                          <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                            <i class="ci-heart"></i>
+                          </button>
+                        <% } %>
+                              <a class="card-img-top d-block overflow-hidden" href="/productdetials/<%= product._id %>/<%= product.category._id %>"><img src="productImages/<%= product.image[0] %>" alt="Product"></a>
+                              <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"></a>
+                                <h3 class="product-title fs-sm"><a href="/productdetials/<%= product._id %>/<%= product.category._id %>"><%= product.name %></a></h3>
+                                <div class="d-flex justify-content-between">
+                                  <div class="product-price"><span class="text-accent">₹<%= product.price %></span></div>
+                                </div>
+                              </div>
+                              <div class="card-body card-body-hidden">
+                                <% if(product.status == "In Stock"){ %>
+                                  <button class="btn btn-primary btn-sm d-block w-100 mb-2" onclick="addToCart('<%= product._id%>',this)"><i class="ci-cart fs-sm me-1"></i>Add to Cart</button>
+                                <% }else{ %>
+                                  <button class="btn btn-danger btn-sm d-block w-100 mb-2" disabled><i class="ci-locked fs-sm me-1"></i>Out of Stock</button>
+                                <% } %>
+                              </div>
+                            </div>
+                            <hr class="d-sm-none">
+                          </div>
+                        <% }) %>
+            
+                        <% }else{ %>
+            
+                          <% products.forEach((product)=>{ %>
+                            <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-5">
+                              <div class="card product-card">
+                                <button class="btn-wishlist btn-sm" onclick="addToWishlist('<%= product._id%>', this)">
+                                  <i class="ci-heart"></i>
+                                </button>
+                                <a class="card-img-top d-block overflow-hidden" href="/productdetials/<%= product._id %>/<%= product.category._id %>"><img src="productImages/<%= product.image[0] %>" alt="Product"></a>
+                                <div class="card-body py-2"><a class="product-meta d-block fs-xs pb-1" href="#"></a>
+                                  <h3 class="product-title fs-sm"><a href="/productdetials/<%= product._id %>/<%= product.category._id %>"><%= product.name %></a></h3>
+                                  <div class="d-flex justify-content-between">
+                                    <div class="product-price"><span class="text-accent">₹<%= product.price %></span></div>
+                                  </div>
+                                </div>
+                                <div class="card-body card-body-hidden">
+                                  <% if(product.status == "In Stock"){ %>
+                                  <button class="btn btn-primary btn-sm d-block w-100 mb-2" onclick="addToCart('<%= product._id%>',this)"><i class="ci-cart fs-sm me-1"></i>Add to Cart</button>
+                                  <% }else{ %>
+                                  <button class="btn btn-danger btn-sm d-block w-100 mb-2" disabled><i class="ci-locked fs-sm me-1"></i>Out of Stock</button>
+                                  <% } %>
+                                </div>
+                              </div>
+                              <hr class="d-sm-none">
+                            </div>
+                            <% }) %>
+            <% } %>
+        </div>
+
+
+        <hr class="my-3">
+        <!-- Pagination-->
+
+        <!-- <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="/shop?page=1"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+          </ul>
+          <ul class="pagination">
+            <li class="page-item d-sm-none"><span class="page-link page-link-static">1 / 5</span></li>
+            <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link">1<span class="visually-hidden">(current)</span></span></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="/shop?page=2">2</a></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="/shop?page=3">3</a></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="/shop?page=4">4</a></li>
+            <li class="page-item d-none d-sm-block"><a class="page-link" href="/shop?page=5">5</a></li>
+          </ul>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="/shop?page=5" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+          </ul>
+        </nav> -->
+
+
+        <nav class="d-flex justify-content-between pt-2" aria-label="Page navigation">
+          <ul class="pagination">
+            <% if (currentPage == 1) { %>
+              <li class="page-item"><a class="page-link"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+            <% } else { %>
+              <li class="page-item"><a class="page-link" href="/shop?page=<%= currentPage-1 %>"><i class="ci-arrow-left me-2"></i>Prev</a></li>
+            <% } %>
+          </ul>
+          <ul class="pagination">
+            <li class="page-item d-sm-none"><span class="page-link page-link-static"><%= currentPage %> / <%= Math.ceil(totalPages) %></span></li>
+            <% for (let i = 1; i <= Math.ceil(totalPages); i++) { %>
+              <% if (i == currentPage) { %>
+                <li class="page-item active d-none d-sm-block" aria-current="page"><span class="page-link"><%= i %><span class="visually-hidden">(current)</span></span></li>
+              <% } else { %>
+                <li class="page-item d-none d-sm-block"><a class="page-link" href="/shop?page=<%= i %>"><%= i %></a></li>
+              <% } %>
+            <% } %>
+          </ul>
+          <ul class="pagination">
+            <% if (currentPage == totalPages) { %>
+            <li class="page-item"><a class="page-link" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+              <% } else { %>
+            <li class="page-item"><a class="page-link" href="/shop?page=<%= currentPage- -1 %>" aria-label="Next">Next<i class="ci-arrow-right ms-2"></i></a></li>
+              <% } %>
+          </ul>
+        </nav>
+        
+
+      </div>
+    </main>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-success border-success">
+          <div class="modal-header bg-faded-success border-success">
+            <h5 class="modal-title text-white" id="cartModalLabel">Success !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-success">
+            <i class="ci-check-circle d-block text-success text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-success text-shadow">Added to Cart</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal fade" id="existModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-warning border-warning">
+          <div class="modal-header bg-faded-warning border-warning">
+            <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-warning">
+            <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-warning text-shadow">Already in Cart</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="modal fade" id="wishModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content bg-faded-warning border-warning">
+          <div class="modal-header bg-faded-warning border-warning">
+            <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center text-warning">
+            <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-warning text-shadow">Already in Wishlist</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+    <script>
+    
+      function addToCart(proId, button){
+    
+          $.ajax({
+    
+              url : '/add-to-cart/'+proId,
+              method : 'post',
+              success : (response) => {
+    
+                  if(response.added){
+                    $('#cartModal').modal('show');
+                  }
+                  if(response.exists){
+                    $('#existModal').modal('show');
+                  }
+    
+              }
+    
+          })
+    
+      }
+    
+    
+      function addToWishlist(proId, button){
+    
+          $.ajax({
+
+              url : '/add-to-wishlist/'+proId,
+              method : 'post',
+              success : (response) => {
+
+                  if(response.added){
+                    $(button).find('.ci-heart').removeClass('ci-heart').addClass('ci-heart-filled text-danger');
+                  }
+                  if(response.exists){
+                    $(button).find('.ci-heart-filled').removeClass('ci-heart-filled text-danger').addClass('ci-heart');
+                  }
+
+              }
+
+          })
+
+      }
+    
+    </script>
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>

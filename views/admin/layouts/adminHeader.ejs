@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+
+<head>
+  <meta charset="utf-8">
+  <title>AFSSIAN</title>
+  <!-- SEO Meta Tags-->
+  <meta name="description" content="Cartzilla - Bootstrap E-commerce Template">
+  <meta name="keywords"
+    content="bootstrap, shop, e-commerce, market, modern, responsive,  business, mobile, bootstrap, html5, css3, js, gallery, slider, touch, creative, clean">
+  <meta name="author" content="Createx Studio">
+  <!-- Viewport-->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Favicon and Touch Icons-->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image"  href="/img/logo.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="mask-icon" color="#fe6a6a" href="safari-pinned-tab.svg">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" media="screen" href="/vendor/simplebar/dist/simplebar.min.css" />
+  <link rel="stylesheet" media="screen" href="/vendor/tiny-slider/dist/tiny-slider.css" />
+  <!-- Main Theme Styles + Bootstrap-->
+  <link rel="stylesheet" media="screen" href="/stylesheets/theme.min.css">
+  <!-- Google Tag Manager-->
+  <script>
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          '../www.googletagmanager.com/gtm5445.html?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-WKV3GT5');
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<!-- Body-->
+<body class="handheld-toolbar-enabled">
+  <!-- Google Tag Manager (noscript)-->
+  <noscript>
+    <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-WKV3GT5" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
+  </noscript>
+    <!-- Dashboard header-->
+    <div class="page-title-overlap bg-dark pt-4">
+      <div class="container d-flex flex-wrap flex-sm-nowrap justify-content-center justify-content-sm-between align-items-center pt-2">
+        <div class="d-flex align-items-center pb-3">
+          <div class="rounded-circle position-relative flex-shrink-0" style="width: 4rem;"><img class="rounded-circle" src="/img/logo.png" alt="AFSSIAN"></div>
+          <div class="ps-3">
+            <h3 class="text-light fs-lg mb-0">AFSSIAN</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mb-5 pb-3 ">
+      <div class="bg-light shadow-lg rounded-3 overflow-hidden">
+        <div class="row">
+          <!-- Sidebar-->
+          <aside class="col-lg-3 pe-xl-5">
+            <!-- Account menu toggler (hidden on screens larger 992px)-->
+            <div class="d-block d-lg-none p-4"><a class="btn btn-outline-accent d-block" href="#account-menu" data-bs-toggle="collapse"><i class="ci-menu me-2"></i>Account Menu</a></div>
+            <!-- Actual menu-->
+            <div class="h-100 border-end mb-2">
+              <div class="d-lg-block collapse" id="account-menu">
+                <div class="bg-secondary p-4">
+                  <h3 class="fs-sm mb-0 text-muted text-center">ADMIN PANEL</h3>
+                </div>
+                <ul class="list-unstyled mb-0">
+                  <li class="border-bottom mb-0 <% if (page == 'dashboard') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/dashboard"><i class="ci-currency-exchange opacity-60 me-2"></i>Dashboard</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'sales') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/sales"><i class="ci-money-bag opacity-60 me-2"></i>Sales</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'order-manage') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/order-manage"><i class="ci-basket opacity-60 me-2"></i>Orders</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'customers') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3 " href="/customers"><i class="ci-user opacity-60 me-2"></i>Customers<span class="fs-sm text-muted ms-auto"></span></a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'category') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3 " href="/category"><i class="ci-server fs-sm opacity-60 me-2"></i>Categories</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'products') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3 " href="/products"><i class="ci-package opacity-60 me-2"></i>Products</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'coupon') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3 " href="/coupon"><i class="ci-discount opacity-60 me-2"></i>Coupons</a></li>
+                  <li class="border-bottom mb-0 <% if (page == 'banner') { %> bg-faded-accent active<% } %>"><a class="nav-link-style d-flex align-items-center px-4 py-3  " href="/banner"><i class="ci-calendar opacity-60 me-2"></i>Banners</a></li>
+                  <li class="mb-0" id="logout"><a class="nav-link-style d-flex align-items-center px-4 py-3" style="color: red;" href="/logout"><i class="ci-sign-out opacity-60 me-2"></i>Logout</a></li>
+                </ul>
+                <hr>
+              </div>
+            </div>
+          </aside>
+<style>
+
+#logout:hover {
+
+    --cz-bg-opacity: 0.09;
+    background-color: rgba(var(--cz-danger-rgb), var(--cz-bg-opacity)) !important;
+
+}
+
+</style>

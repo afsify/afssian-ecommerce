@@ -1,0 +1,118 @@
+<%- include('../admin/layouts/adminHeader.ejs')%>
+
+
+<!-- Content-->
+<section class="col-lg-9 pt-lg-4 pb-4 mb-3">
+  <div class="pt-2 px-4 ps-lg-0 pe-xl-5">
+    <!-- Title-->
+    <div class="d-sm-flex flex-wrap justify-content-between align-items-center pb-2">
+      <h2 class="h3 py-2 me-2 text-center text-sm-start">Update Category</h2>
+      <% if(ustatus=="true" ) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong>&nbsp; Category are added successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <% } %>
+    </div>
+      <div class="border mb-1" style="height: 230px;">
+        <label for="product_images" class="d-block">
+          <div id="image_drop_area" class="d-flex justify-content-center align-items-center mx-auto col-md-10 my-1 text-muted" style=" min-height: 200px; border: 1px dashed rgba(57, 57, 57, 0.766);" onclick="document.getElementById('image_drop_area').innerHTML=`<p class=''>Drag and Drop Image here</p>`">
+            <p class="text-muted">Drag and Drop Image here</p>
+          </div>
+        </label>
+      </div>
+      <div id="dragged_images">
+        <div class="d-flex flex-lg-row">
+          <img src="/productImages/<%= Categories.image%>" alt="" class="image-fluid rounded" style="width: 80px ; height:50px ;">
+          <p class="text-secondary ms-3">
+            <%= Categories.image %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <form action="/update-category/<%= Categories._id %>" method="post" enctype="multipart/form-data">
+      <input type="file" name="product_images" class="d-none" id="product_images" required>
+      <div class="mb-3 pb-2">
+        <label class="form-label" for="unp-product-name">Category Name</label>
+        <input class="form-control" name="category" type="text" value="<%= Categories.categoryName %>" id="unp-product-name" required>
+      </div>
+      <button class="btn btn-primary d-block w-100" type="submit"><i class="ci-cloud-upload fs-lg me-2"></i>Update Category</button>
+    </form>
+  </div>
+</section>
+</div>
+</div>
+</div>
+</main>
+
+
+  <script>
+    setTimeout(() => {
+        document.getElementById("mesage").remove();
+    }, 3000);
+</script>
+  <script>function imageDrop() {
+
+    const image_drop_area = document.querySelector("#image_drop_area");
+    var uploaded_image;
+
+    // Event listener for dragging the image over the div
+    image_drop_area.addEventListener('dragover', (event) => {
+        image_drop_area.classList.add('bg-secondary')
+        image_drop_area.classList.add('text-white')
+        image_drop_area.classList.remove('text-muted')
+
+
+        event.stopPropagation();
+        event.preventDefault();
+        // Style the drag-and-drop as a "copy file" operation.
+        event.dataTransfer.dropEffect = 'copy';
+    });
+    image_drop_area.addEventListener('dragleave', (event) => {
+        image_drop_area.classList.remove('bg-secondary')
+        image_drop_area.classList.remove('text-white')
+        image_drop_area.classList.add('text-muted')
+
+    });
+
+    // Event listener for dropping the image inside the div
+    image_drop_area.addEventListener('drop', (event) => {
+        event.stopPropagation();
+        event.preventDefault();
+
+        fileList = event.dataTransfer.files;
+
+        document.querySelector("#product_images").files = fileList;
+
+        document.getElementById('dragged_images').innerHTML = '';
+        for (let i = 0; i < fileList.length; i++) {
+            readImage(fileList[i]);
+        }
+        image_drop_area.classList.remove('bg-secondary')
+        image_drop_area.classList.remove('text-white')
+        image_drop_area.classList.add('text-muted')
+    });
+
+    // Converts the image into a data URI
+    readImage = (file) => {
+        let dragged_images = document.getElementById('dragged_images');
+        // dragged_images.innerHTML = '';
+        const reader = new FileReader();
+        reader.addEventListener('load', (event) => {
+            uploaded_image = event.target.result;
+            image_drop_area.style.border = 'none';
+            dragged_images.innerHTML += `<div class="d-flex border justify-content-between rounded align-items-center my-1">
+<div style="max-height: 80px; max-width: 80px;" class="p-0 rounded">
+<img src="${uploaded_image}" alt=""  class="image-fluid rounded w-100">
+</div>
+<p class="text-secondary">${file.name}</p>
+</div>`
+        });
+        reader.readAsDataURL(file);
+    }
+}
+imageDrop()
+</script>
+
+
+<%- include('../admin/layouts/adminFooter.ejs')%>

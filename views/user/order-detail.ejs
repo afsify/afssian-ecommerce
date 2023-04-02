@@ -1,0 +1,303 @@
+<%- include('../user/layouts/userHeader.ejs')%>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<form class="needs-validation modal fade" action="/return-order" method="post" id="return-reason" tabindex="-1" novalidate>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Return Form</h5>
+        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row gx-4 gy-3">
+          <div class="col-sm-12">
+            <label class="form-label" for="reason">Reason for Return</label>
+            <textarea class="form-control" name="reason" rows="3" id="reason" required></textarea>
+            <div class="invalid-feedback">Please fill your reason!</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-primary btn-shadow" type="submit"><i class="ci-check-circle fs-lg me-2"></i>SUBMIT</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<!-- Page Title-->
+<div class="page-title-overlap bg-dark pt-4">
+    <div class="container d-lg-flex justify-content-between py-2 py-lg-3">
+      <div class="order-lg-2 mb-3 mb-lg-0 pt-lg-2">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-light flex-lg-nowrap justify-content-center justify-content-lg-start">
+            <li class="breadcrumb-item"><a class="text-nowrap" href="/"><i class="ci-home"></i>Home</a></li>
+            <li class="breadcrumb-item text-nowrap"><a href="/account">Account</a>
+            </li>
+            <li class="breadcrumb-item text-nowrap active" aria-current="page">Orders History</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="order-lg-1 pe-lg-4 text-center text-lg-start">
+        <h1 class="h3 text-light mb-0">My Orders</h1>
+      </div>
+    </div>
+  </div>
+  <div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+      <!-- Sidebar-->
+      <aside class="col-lg-4 pt-4 pt-lg-0 pe-xl-5">
+        <div class="bg-white rounded-3 shadow-lg pt-1 mb-5 mb-lg-0">
+          <div class="d-md-flex justify-content-between align-items-center text-center text-md-start p-4">
+            <div class="d-md-flex align-items-center">
+              <!-- <div class="img-thumbnail rounded-circle position-relative flex-shrink-0 mx-auto mb-2 mx-md-0 mb-md-0" style="width: 6.375rem;"><img class="rounded-circle" src="img/shop/account/avatar.jpg" alt="Susan Gardner"></div> -->
+              <div class="ps-md-3">
+                <h3 class="fs-base mb-0"><%= userData.name %></h3><span class="text-accent fs-sm"><%= userData.email %></span>
+              </div>
+            </div><a class="btn btn-primary d-lg-none mb-2 mt-3 mt-md-0" href="#account-menu" data-bs-toggle="collapse" aria-expanded="false"><i class="ci-menu me-2"></i>Account Menu</a>
+          </div>
+          <div class="d-lg-block collapse" id="account-menu">
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">DASHBOARD</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0 bg-faded-accent"><a class="nav-link-style d-flex align-items-center px-4 py-3 active" href="/order"><i class="ci-bag opacity-60 me-2"></i>Orders<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/wishlist"><i class="ci-heart opacity-60 me-2"></i>Wishlist<span class="fs-sm text-muted ms-auto"></span></a></li>
+              <li class="mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/discount"><i class="ci-discount opacity-60 me-2"></i>Coupons<span class="fs-sm text-muted ms-auto"></span></a></li>
+            </ul>
+            <div class="bg-secondary px-4 py-3">
+              <h3 class="fs-sm mb-0 text-muted text-center">ACCOUNT</h3>
+            </div>
+            <ul class="list-unstyled mb-0">
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/account"><i class="ci-user opacity-60 me-2"></i>Profile Info</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/change-password"><i class="ci-loading opacity-60 me-2"></i>Change Password</a></li>
+              <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/address"><i class="ci-location opacity-60 me-2"></i>Addresses</a></li>
+              <li class="d-lg-none border-top mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3" href="/userlogout"><i class="ci-sign-out opacity-60 me-2"></i>SIGN OUT</a></li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <section class="col-lg-8">
+        <!-- Toolbar-->
+    <div class="d-flex justify-content-between align-items-center pt-lg-2 pb-4 pb-lg-5 mb-lg-3">
+        <div class="d-flex align-items-center">
+        </div>
+            <a class="btn btn-danger btn-sm" href="/userlogout"><i class="ci-sign-out me-2"></i>SIGN OUT</a>
+      </div>
+
+
+
+
+      <div class="card border-0 shadow-lg">
+        <div class="card-body text-center">
+          <h3 class="h2 mt-2 mb-3">Order Detail</h3>
+          <div class="card border-0 bg-faded-success shadow">
+            <div class="card-body d-block">
+              <h3 class="fs-sm m-0 mb-2">ORDER ID : <%= orderData._id %></h3>
+              <h3 class="fs-sm m-0">USER ID : <%= orderData.user_Id %></h3>
+            </div>
+          </div>
+
+          <div class="card border-0 bg-faded-light mt-4 mb-4 shadow">
+            <div class="card-body" style="overflow-x: auto; max-height: 440px;" data-simplebar>
+                <% orderData.products.forEach((o)=>{%>
+                    <div class="d-sm-flex justify-content-between my-4 pb-3 border-bottom">
+                      <div class="d-sm-flex text-center text-sm-start"><a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" href="#"><img src="http://localhost:5000/productimages/<%= o.product.image[0]%>" class="rounded-3" width="160" alt="Product"></a>
+                        <div class="pt-2">
+                          <h3 class="product-title fs-base mb-1"><a href="#"><%= o.product.name %></a></h3>
+                          <div class="fs-lg text-accent pt-2 mb-1">₹<%= o.price %></div>
+                          <div class="fs-sm text-success"><span class="text-muted me-2">Total:</span>₹<%= o.price*o.quantity %></div>
+                        </div>
+                      </div>
+                      <div class="pt-2 pt-sm-0 ps-sm-3 mx-auto mx-sm-0 text-center text-sm-end" style="max-width: 9rem;">
+                        <p class="mb-0"><span class="text-muted fs-sm">Quantity:</span><span>&nbsp;<%= o.quantity %></span></p>
+                      </div>
+                    </div>
+                <% }) %>
+            </div>
+          </div>
+            <!-- Client details-->
+            <div class="bg-secondary rounded-3 px-4 pt-4 pb-2 shadow">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h4 class="h6">Shipping to :</h4>
+                  <ul class="list-unstyled fs-sm">
+                    <li><span class="text-muted">Client : </span><%= orderData.address.name %></li>
+                    <li><span class="text-muted">Address : </span>
+                        <p>
+                            <%= orderData.address.house +', '+ orderData.address.post +', ' + orderData.address.pin+', '+ orderData.address.city +', '+ orderData.address.district +', '+orderData.address.state %>
+                        </p>
+                    </li>
+                    <li><span class="text-muted">Phone : </span><%= orderData.address.phone %></li>
+                  </ul>
+                </div>
+                <div class="col-sm-6">
+                  <h4 class="h6">Payment Method :</h4>
+                  <ul class="list-unstyled fs-sm">
+                    <li><span class="text-muted"><%= orderData.paymentMethod %> : </span><%= orderData.paymentStatus %></li>
+                  </ul>
+                  <h4 class="h6">Ordered Date :</h4>
+                  <ul class="list-unstyled fs-sm">
+                    <li><%= orderData.date.toLocaleDateString() %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="card bg-faded-info border-0 mt-4 shadow">
+                <div class="card-body text-center">
+                  <h3 class="mt-2 mb-4"><i class="ci-rupee fs-3 text-accent"></i><span class="fs-1 text-accent"><%= orderData.Subtotal %>/-</span></h3>
+                  <ul class="list-unstyled fs-sm mb-0">
+                    <li>
+                      <span class="text-muted me-1">Subtotal : </span>
+                      <a class="nav-link-style">₹<%= orderData.Subtotal + orderData.coupon.couponDiscount %></a>
+                    </li>
+                    <li>
+                      <span class="text-muted me-1">Discount : </span>
+                      <a class="nav-link-style"><%= orderData.coupon.couponDiscount %></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card border-0 mt-4 bg-darker shadow">
+                <div class="card-body text-center">
+
+                    <% if(orderData.orderStatus == "Placed"){ %>
+                        <div class="steps steps-light pt-4"><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-document-alt"></i>Placed</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-document"></i>Approved</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">3</span></div>
+                            <div class="step-label"><i class="ci-package"></i>Packed</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">4</span></div>
+                            <div class="step-label"><i class="ci-delivery"></i>Shipped</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">5</span></div>
+                            <div class="step-label"><i class="ci-smile"></i>Delivered</div></a>
+                        </div>
+                      <% } else if(orderData.orderStatus == "Approved"){ %>
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-document-alt"></i>Placed</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-document"></i>Approved</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">3</span></div>
+                            <div class="step-label"><i class="ci-package"></i>Packed</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">4</span></div>
+                            <div class="step-label"><i class="ci-delivery"></i>Shipped</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">5</span></div>
+                            <div class="step-label"><i class="ci-smile"></i>Delivered</div></a>
+                        </div>
+                      <% } else if(orderData.orderStatus == "Packed"){ %>
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-document-alt"></i>Placed</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-document"></i>Approved</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">3</span></div>
+                            <div class="step-label"><i class="ci-package"></i>Packed</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">4</span></div>
+                            <div class="step-label"><i class="ci-delivery"></i>Shipped</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">5</span></div>
+                            <div class="step-label"><i class="ci-smile"></i>Delivered</div></a>
+                        </div>
+                      <% } else if(orderData.orderStatus == "Shipped"){ %>
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-document-alt"></i>Placed</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-document"></i>Approved</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">3</span></div>
+                            <div class="step-label"><i class="ci-package"></i>Packed</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">4</span></div>
+                            <div class="step-label"><i class="ci-delivery"></i>Shipped</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">5</span></div>
+                            <div class="step-label"><i class="ci-smile"></i>Delivered</div></a>
+                        </div>
+                    <% } else if(orderData.orderStatus == "Delivered"){ %>
+        
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-document-alt"></i>Placed</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-document"></i>Approved</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">3</span></div>
+                            <div class="step-label"><i class="ci-package"></i>Packed</div></a><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">4</span></div>
+                            <div class="step-label"><i class="ci-delivery"></i>Shipped</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">5</span></div>
+                            <div class="step-label"><i class="ci-smile"></i>Delivered</div></a>
+                        </div>
+
+                    <% }else if(orderData.orderStatus == "Canceled"){%>
+                        <div class="steps steps-light pt-4"><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">X</span></div>
+                            <div class="step-label"><i class="ci-close-circle"></i>Canceled</div></a>
+                        </div>
+                    <% }else if(orderData.orderStatus == "Rejected"){%>
+                        <div class="steps steps-light pt-4"><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">X</span></div>
+                            <div class="step-label"><i class="ci-security-close"></i>Rejected</div></a>
+                        </div>
+                    <% }else if(orderData.orderStatus == "Return Request"){%>
+                        <div class="steps steps-light pt-4"><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-add-document"></i>Return Processing</div></a><a class="step-item">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-reload"></i>Returned</div></a>
+                        </div>
+
+                        <div class="card border-0 mt-4 shadow-lg">
+                            <div class="card-body m-0 p-3">
+                                <h4 class="m-0 h5 text-muted p-0">Reason : <%= orderData.returnReason %></h4>
+                            </div>
+                          </div>
+
+                    <% }else if(orderData.orderStatus == "Returned"){%>
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-add-document"></i>Return Processing</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-reload"></i>Returned</div></a>
+                        </div>
+
+                        <div class="card border-0 mt-4 shadow-lg">
+                            <div class="card-body m-0 p-3">
+                                <h4 class="m-0 h5 text-muted p-0">Reason : <%= orderData.returnReason %></h4>
+                            </div>
+                          </div>
+                    <% }else if(orderData.orderStatus == "Return Rejected"){%>
+                        <div class="steps steps-light pt-4"><a class="step-item active">
+                            <div class="step-progress"><span class="step-count">1</span></div>
+                            <div class="step-label"><i class="ci-add-document"></i>Return Request</div></a><a class="step-item active current">
+                            <div class="step-progress"><span class="step-count">2</span></div>
+                            <div class="step-label"><i class="ci-security-prohibition"></i>Return Rejected</div></a>
+                        </div>
+
+                        <div class="card border-0 mt-4 shadow-lg">
+                            <div class="card-body m-0 p-3">
+                                <h4 class="m-0 h5 text-muted p-0">Reason : <%= orderData.returnReason %></h4>
+                            </div>
+                          </div>
+                    <% } %>
+
+
+                </div>
+              </div>
+        </div>
+      </div>
+
+
+
+
+</div>
+</div>
+</main>
+
+
+
+
+<%- include('../user/layouts/userFooter.ejs')%>
