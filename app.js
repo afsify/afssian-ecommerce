@@ -61,13 +61,13 @@ app.use((req, res, next) => {
 
 });
 
-// app.use(function(err, req, res, next) {
+app.use(function(err, req, res, next) {
 
-//     console.error(err.stack);
-//     res.status(500);
-//     res.render('error/500', { title: '500 Error' });
+    console.error(err.stack);
+    res.status(500);
+    res.render('error/500', { title: '500 Error' });
 
-// });
+});
 
 
 
