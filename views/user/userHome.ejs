@@ -15,7 +15,7 @@
                       <div class="col-lg-5 col-md-6 offset-lg-1 order-md-1 pt-4 pb-md-4 text-center text-md-start">
                         <h1 class="display-4 from-bottom delay-1"><%= s.bannerName %></h1>
                         <h5 class="fw-light pb-3 from-bottom delay-2"><%= s.description %></h5>
-                        <div class="d-table scale-up delay-4 mx-auto mx-md-0"><a class="btn btn-primary btn-shadow" target="_blank" href="https://www.google.com/">Shop Now<i class="ci-arrow-right ms-2 me-n1"></i></a></div>
+                        <div class="d-table scale-up delay-4 mx-auto mx-md-0"><a class="btn btn-primary btn-shadow" href="/shop">Shop Now<i class="ci-arrow-right ms-2 me-n1"></i></a></div>
                       </div>
                     </div>
                   </div>
@@ -28,7 +28,7 @@
               <div class="table-responsive" data-simplebar>
                 <div class="d-flex d-xl-block">
                   <% bannerGroup.forEach((g)=> { %>
-                  <a class="d-flex align-items-center bg-faded-success rounded-3 pt-0 ps-2 mb-3 me-4 me-xl-0" target="_blank" href="https://www.google.com/" style="min-width: 16rem;"><img src="/productImages/<%= g.image %>" width="125" alt="Banner">
+                  <a class="d-flex align-items-center bg-faded-success rounded-3 pt-0 ps-2 mb-3 me-4 me-xl-0" href="/shop" style="min-width: 16rem;"><img src="/productImages/<%= g.image %>" width="125" alt="Banner">
                     <div class="py-4 px-2">
                       <h5 class="mb-1"><%= g.bannerName %></h5>
                       <h5 class="fw-lighter fs-md mb-1"><%= g.description %></h5>
@@ -147,25 +147,8 @@
         </div>
       </div>
     </div>
-    
-    
-    <div class="modal fade" id="wishModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content bg-faded-warning border-warning">
-          <div class="modal-header bg-faded-warning border-warning">
-            <h5 class="modal-title text-white" id="cartModalLabel">Alert !</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center text-warning">
-            <i class="ci-security-announcement text-warning text-shadow mb-3" style="font-size: 3rem;"></i>
-            <h5 class="text-warning text-shadow">Already in Wishlist</h5>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    
-    
+
+
     <script>
     
       function addToCart(proId, button){

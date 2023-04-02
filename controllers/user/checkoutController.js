@@ -348,7 +348,9 @@ const verifyPayment = async(req,res,next)=>{
     } catch (error) {
 
         next(error);
+
     }
+
 }
 
 //! ============================================ Checkout Review ============================================

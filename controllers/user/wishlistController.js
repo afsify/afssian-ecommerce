@@ -127,7 +127,7 @@ const deleteWishlist = async (req, res, next) => {
 
 module.exports = {
 
-    
+
     viewWishlist,
     addToWishlist,
     deleteWishlist

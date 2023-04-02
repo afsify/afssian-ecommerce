@@ -9,11 +9,6 @@ const categorySchema =new mongoose.Schema({
 
     },
 
-    // status:{
-    //     type:String,
-    //     required:true
-    // },
-
     image:{
 
         type:String,

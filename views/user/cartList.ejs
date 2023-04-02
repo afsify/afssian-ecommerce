@@ -22,7 +22,6 @@
   </div>
 
   <% if(cart.cart.length==0){%>
-
     <!-- Alert with bakground image -->
     <div class="container pb-5 mb-2 mb-md-4">
       <div class="row">
@@ -30,8 +29,8 @@
         <div class="alert alert-dismissible bg-size-cover fade show text-center py-5" style="background-image: url(https://arteno.serveradda.in/assets/images/deafult/emptycart.gif)" role="alert">
           <i class="ci-loading d-block text-muted my-4" style="font-size: 3rem;"></i>
           <h2 class="text-muted text-shadow">Your Cart is Empty !</h2>
-          <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Offers</h4>
-          <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>View Offers</a>
+          <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Shop</h4>
+          <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>Buy Products</a>
         </div>
         </section>
         </div>
@@ -51,11 +50,9 @@
           <% let subtotal = 0 %>
         <% cart.cart.forEach((cart)=>{ %>
         <div class="d-sm-flex justify-content-between align-items-center my-2 pb-3 border-bottom" id="<%= cart.id %>item">
-          <div class="d-block d-sm-flex align-items-center text-center text-sm-start"><a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><img src="/productimages/<%= cart.product_id.image[0] %>" class="rounded-3" width="160" alt="Product"></a>
+          <div class="d-block d-sm-flex align-items-center text-center text-sm-start"><a class="d-inline-block flex-shrink-0 mx-auto me-sm-4" href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><img src="/productImages/<%= cart.product_id.image[0] %>" class="rounded-3" width="160" alt="Product"></a>
             <div class="pt-2">
               <h3 class="product-title fs-base mb-1"><a href="/productdetials/<%= cart.product_id._id %>/<%= cart.product_id.category._id %>"><%= cart.product_id.name %></a></h3>
-              <!-- <div class="fs-sm"><span class="text-muted me-2">Category:</span></div> -->
-              <!-- <div class="fs-sm"><span class="text-muted me-2">Color:</span>White &amp; Blue</div> -->
               <div class="fs-lg text-accent pt-2 mb-1"><span>₹</span><span id="<%= cart.id %>Price"><%= cart.product_id.price %></span></div>
               <div class="fs-sm text-success"><span class="text-muted me-2">Total :</span><span>₹</span><span id="<%= cart.id %>TotalPrice"><%= cart.product_id.price*cart.quantity %></span></div>
             </div>
@@ -101,8 +98,8 @@
               <div class="alert alert-dismissible bg-size-cover fade show text-center mb-0 py-5" style="background-image: url(https://arteno.serveradda.in/assets/images/deafult/emptycart.gif)" role="alert">
                 <i class="ci-loading d-block text-muted my-4" style="font-size: 3rem;"></i>
                 <h2 class="text-muted text-shadow">Your Cart is Empty !</h2>
-                <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Offers</h4>
-                <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>View Offers</a>
+                <h4 class="text-muted fs-normal text-shadow mb-4 pb-2">Check our Shop</h4>
+                <a href="/shop" class="btn btn-primary mb-3"><i class="ci-bag fs-base pb-2 me-2"></i>Buy Products</a>
               </div>
         </div>
       </div>
