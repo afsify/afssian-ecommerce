@@ -1,110 +1,69 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema({
-
+const orderSchema = new mongoose.Schema(
+  {
     user_Id: {
-
-        type: String,
-        ref:'user',
-        required:true
-
+      type: String,
+      ref: "user",
+      required: true,
     },
-
     address: {
-
-        name:  {type:String},
-        phone:  {type:Number},
-        house:  {type:String},
-        post:  {type:String},
-        city:  {type:String},
-        district:  {type:String},
-        state:  {type:String},
-        pin:  {type:Number}
-
+      name: { type: String },
+      phone: { type: Number },
+      house: { type: String },
+      post: { type: String },
+      city: { type: String },
+      district: { type: String },
+      state: { type: String },
+      pin: { type: Number },
     },
+    products: [
+      {
+        product: {
+          type: String,
+          ref: "product",
+        },
 
-    products:[
+        quantity: {
+          type: String,
+          default: 1,
+        },
 
-        {
-
-            product:{
-
-                type:String,
-                ref:'product'
-
-            },
-
-            quantity:{
-
-                type:String,
-                default:1
-
-            },
-
-            price:{
-
-                type:Number,
-                default:0
-
-            }
-
-        }
+        price: {
+          type: Number,
+          default: 0,
+        },
+      },
     ],
-
-    Subtotal:{
-
-        type:Number,
-        required:true
-
+    Subtotal: {
+      type: Number,
+      required: true,
     },
-
-    paymentMethod:{
-
-        type:String,
-
+    paymentMethod: {
+      type: String,
     },
-
-    paymentStatus:{
-
-        type:String,
-        default:"Pending"
-
+    paymentStatus: {
+      type: String,
+      default: "Pending",
     },
-
-    orderStatus:{
-
-        type:String,
-
+    orderStatus: {
+      type: String,
     },
-
-    coupon:{
-
-        couponCode:{type:String,default:''},
-        couponDiscount:{type:Number,default:0}
-
+    coupon: {
+      couponCode: { type: String, default: "" },
+      couponDiscount: { type: Number, default: 0 },
     },
-
-    returnReason:{
-
-        type:String
-
+    returnReason: {
+      type: String,
     },
-
-    date:{
-
-        type:Date,
-        default:Date.now
-
-    }
-
-},
-
-    {
-
-        timestamps:true
-
-    }
-
+    date: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+  }
 );
 
-module.exports = orderModel = mongoose.model('order',orderSchema);
+module.exports = orderModel = mongoose.model("order", orderSchema);

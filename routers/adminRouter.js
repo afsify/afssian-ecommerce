@@ -1,30 +1,26 @@
+const path = require('path');
+const multer = require('multer');
 const express = require('express');
 const admin_route = express.Router()
+const config = require("../config/config");
 const {adminSession} = require('../middleware/auth');
-const multer = require('multer');
 const adminController = require("../controllers/admin/adminController");
 const bannerController = require("../controllers/admin/bannerController");
 const categoryController = require("../controllers/admin/categoryController");
 const orderController = require("../controllers/admin/orderController");
 const productController = require("../controllers/admin/productController");
 const couponController = require("../controllers/admin/couponController");
-const config = require("../config/config");
-const path = require('path');
-
-
-
-//? ============================================================================================================
 
 const storage = multer.diskStorage({
-    destination:function(req,file,callback) {
-        callback(null,path.join(__dirname,"../public/productImages"))
-    },
-    filename:function(req,file,callback){
-        const name = Date.now()+"-"+file.originalname;
-        callback(null,name);
-    }
-})
-const uploadOptions = multer({storage:storage})
+  destination: function (req, file, callback) {
+    callback(null, path.join(__dirname, "../public/productImages"));
+  },
+  filename: function (req, file, callback) {
+    const name = Date.now() + "-" + file.originalname;
+    callback(null, name);
+  },
+});
+const uploadOptions = multer({ storage: storage });
 
 //? ================================================ Admin Login ================================================
 
@@ -50,7 +46,6 @@ admin_route.post('/unblockUser/:id', adminSession, adminController.unblockUser);
 
 admin_route.get('/order-manage', adminSession, orderController.viewOrderManage);
 admin_route.get("/order-data/:id", adminSession,orderController.viewOrderData);
-
 admin_route.post("/changeOrderStatus",adminSession, orderController.statusChange);
 admin_route.post("/reject-status",adminSession, orderController.rejectStatus);
 
@@ -87,9 +82,5 @@ admin_route.post('/delete-banner/:id/:val',adminSession, bannerController.delete
 //? =============================================== Admin Logout ===============================================
 
 admin_route.get('/logout', adminController.logoutAdmin);
-
-//? ============================================================================================================
-
-
 
 module.exports = admin_route;

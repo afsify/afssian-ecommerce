@@ -1,17 +1,13 @@
 const express = require("express");
 const user_route = express.Router();
+const config=require("../config/config");
 const { userSession, loginSession } = require("../middleware/auth");
 const userController = require("../controllers/user/userController");
+const cartController = require("../controllers/user/cartController");
 const accountController = require("../controllers/user/accountController");
 const wishlistController = require("../controllers/user/wishlistController");
-const cartController = require("../controllers/user/cartController");
 const checkoutController = require("../controllers/user/checkoutController");
 const purchaseController = require("../controllers/user/purchaseController");
-const config=require("../config/config");
-
-//? ============================================================================================================
-
-
 
 //? ============================================== Landing Home ==============================================
 
@@ -74,9 +70,5 @@ user_route.get('/checkout-review', userSession, checkoutController.viewCheckoutR
 //? =============================================== Logout User ===============================================
 
 user_route.get("/userlogout", userController.logoutUser);
-
-
-
-//? ============================================================================================================
 
 module.exports = user_route;
