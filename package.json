@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "build": "npm i",
+    "start": "nodemon app.js",
+    "server": "pm2 start index.js --name afssian"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +30,7 @@
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.20",
     "pdfkit": "^0.13.0",
+    "pm2": "^5.3.0",
     "promise": "^8.3.0",
     "razorpay": "^2.8.6",
     "sweetalert": "^2.1.2"
