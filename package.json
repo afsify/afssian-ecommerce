@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm i",
     "start": "nodemon app.js",
-    "server": "pm2 start app.js --name afssian"
+    "server": "pm2 start app.js"
   },
   "keywords": [],
   "author": "",
