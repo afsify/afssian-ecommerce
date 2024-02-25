@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "npm i",
-    "start": "nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "server": "pm2 start app.js"
   },
   "keywords": [],
