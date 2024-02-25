@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "build": "npm i",
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "server": "pm2 start app.js"
   },
   "keywords": [],
