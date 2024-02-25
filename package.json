@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "engines": {
-    "node": "18.x"
-  },
   "scripts": {
     "build": "npm i",
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "server": "pm2 start app.js"
   },
   "keywords": [],
